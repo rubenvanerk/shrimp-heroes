@@ -1,4 +1,5 @@
 import { Leaderboard } from '@/components/leaderboard';
+import { RecentActions } from '@/components/recent-actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
@@ -13,6 +14,19 @@ interface LeaderboardUser extends User {
     rank?: number;
 }
 
+interface Action {
+    id: number;
+    packages_flipped: number;
+    shrimp_helped: number;
+    notes: string | null;
+    performed_at: string;
+    user: User;
+    store: {
+        name: string;
+        address: string;
+    } | null;
+}
+
 interface DashboardProps {
     globalStats: {
         totalPackagesFlipped: number;
@@ -22,6 +36,7 @@ interface DashboardProps {
     leaderboard: LeaderboardUser[];
     currentUserStats: LeaderboardUser;
     currentUserInTop10: boolean;
+    recentActions: Action[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -36,6 +51,7 @@ export default function Dashboard({
     leaderboard,
     currentUserStats,
     currentUserInTop10,
+    recentActions,
 }: DashboardProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -106,6 +122,8 @@ export default function Dashboard({
                     currentUserStats={currentUserStats}
                     currentUserInTop10={currentUserInTop10}
                 />
+
+                <RecentActions actions={recentActions} />
             </div>
         </AppLayout>
     );

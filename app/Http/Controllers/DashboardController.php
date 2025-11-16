@@ -54,11 +54,23 @@ class DashboardController extends Controller
 
         $currentUserInTop10 = $leaderboard->contains('id', $currentUser->id);
 
+        $recentActions = Action::query()
+            ->with(['user', 'store'])
+            ->latest('performed_at')
+            ->limit(5)
+            ->get()
+            ->map(function ($action) use ($shrimpPerPackage) {
+                $action->shrimp_helped = $action->packages_flipped * $shrimpPerPackage;
+
+                return $action;
+            });
+
         return Inertia::render('dashboard', [
             'globalStats' => $globalStats,
             'leaderboard' => $leaderboard,
             'currentUserStats' => $currentUserStats,
             'currentUserInTop10' => $currentUserInTop10,
+            'recentActions' => $recentActions,
         ]);
     }
 }
