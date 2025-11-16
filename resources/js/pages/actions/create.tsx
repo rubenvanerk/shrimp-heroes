@@ -136,7 +136,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Action" />
 
-            <div className="mx-auto max-w-2xl space-y-6 p-4">
+            <div className="mx-auto max-w-2xl space-y-6 p-4 pb-24 md:pb-4">
                 <HeadingSmall
                     title="Report your action"
                     description="Log the packages you've flipped to help save shrimp"

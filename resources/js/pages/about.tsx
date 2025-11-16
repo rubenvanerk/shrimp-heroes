@@ -48,7 +48,7 @@ export default function About() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="How your action helps shrimp" />
-            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4 pb-24 md:pb-4">
                 <div className="mx-auto w-full max-w-4xl space-y-6">
                     <div className="text-center space-y-4">
                         <div>
