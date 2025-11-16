@@ -10,6 +10,11 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Shrimp Heroes React App
+Route::get('/app', function () {
+    return view('shrimp-app');
+})->name('shrimp-app');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');

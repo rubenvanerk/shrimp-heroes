@@ -1,0 +1,7 @@
+{
+  "name": "Shrimp Heroes",
+  "description": "A gamified app to help shrimp by taking small, fun actions at supermarkets. Report your actions, track your impact, and climb the leaderboard to become a Shrimp Hero!",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
