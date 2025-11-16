@@ -71,7 +71,7 @@ class ActionController extends Controller
             'packages_flipped' => $request->input('packages_flipped'),
             'notes' => $request->input('notes'),
             'photos' => $request->input('photos', []),
-            'performed_at' => $request->input('performed_at'),
+            'performed_at' => now(),
         ]);
 
         return to_route('actions.index')->with('success', 'Action reported successfully!');

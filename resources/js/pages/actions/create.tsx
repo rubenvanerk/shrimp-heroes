@@ -196,28 +196,6 @@ export default function CreateAction({ stores: initialStores, userLocation }: Cr
                                 <InputError message={errors.packages_flipped} />
                             </div>
 
-                            {/* Performed At */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="performed_at">
-                                    When did you perform this action? *
-                                </Label>
-
-                                <Input
-                                    id="performed_at"
-                                    name="performed_at"
-                                    type="datetime-local"
-                                    className="mt-1 block w-full"
-                                    defaultValue={
-                                        new Date()
-                                            .toISOString()
-                                            .slice(0, 16)
-                                    }
-                                    required
-                                />
-
-                                <InputError message={errors.performed_at} />
-                            </div>
-
                             {/* Notes */}
                             <div className="grid gap-2">
                                 <Label htmlFor="notes">
