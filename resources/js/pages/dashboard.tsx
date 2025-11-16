@@ -40,14 +40,14 @@ export default function Dashboard({
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <Card>
+                    <Card className="bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/20 dark:to-purple-900/10">
                         <CardHeader>
                             <CardTitle className="text-sm font-medium text-muted-foreground">
                                 Packages Flipped
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums">
+                            <div className="text-3xl font-bold tabular-nums text-purple-700 dark:text-purple-400">
                                 {globalStats.totalPackagesFlipped.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
@@ -56,14 +56,14 @@ export default function Dashboard({
                         </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10">
                         <CardHeader>
                             <CardTitle className="text-sm font-medium text-muted-foreground">
                                 Shrimp Helped
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums">
+                            <div className="text-3xl font-bold tabular-nums text-blue-700 dark:text-blue-400">
                                 {globalStats.totalShrimpHelped.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
@@ -72,14 +72,14 @@ export default function Dashboard({
                         </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-orange-900/10">
                         <CardHeader>
                             <CardTitle className="text-sm font-medium text-muted-foreground">
                                 Actions Taken
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums">
+                            <div className="text-3xl font-bold tabular-nums text-orange-700 dark:text-orange-400">
                                 {globalStats.totalActions.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
