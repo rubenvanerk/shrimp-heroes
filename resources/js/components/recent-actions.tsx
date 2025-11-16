@@ -7,7 +7,7 @@ interface Action {
     packages_flipped: number;
     shrimp_helped: number;
     notes: string | null;
-    performed_at: string;
+    created_at: string;
     user: User;
     store: {
         name: string;
@@ -79,7 +79,7 @@ export function RecentActions({ actions }: RecentActionsProps) {
                                 </span>
                                 <span className="text-xs text-muted-foreground">
                                     {new Date(
-                                        action.performed_at,
+                                        action.created_at,
                                     ).toLocaleDateString('en-US', {
                                         month: 'short',
                                         day: 'numeric',

@@ -27,7 +27,7 @@ class ActionFactory extends Factory
                 fake()->imageUrl(640, 480, 'store'),
                 fake()->imageUrl(640, 480, 'products'),
             ]),
-            'performed_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

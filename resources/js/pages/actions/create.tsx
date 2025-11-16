@@ -36,7 +36,6 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
     const { data, setData, post, processing, errors, recentlySuccessful, reset } = useForm({
         store_id: '',
         packages_flipped: '',
-        performed_at: new Date().toISOString().slice(0, 16),
         notes: '',
         photos: [] as File[],
     });
@@ -58,7 +57,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                 }
             );
         }
-    }, [userLocation]);
+    }, []); // Empty dependency array - only run once on mount
 
     // Handle photo upload
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

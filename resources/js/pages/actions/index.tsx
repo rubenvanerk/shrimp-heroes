@@ -23,7 +23,7 @@ interface Action {
     id: number;
     packages_flipped: number;
     notes: string | null;
-    performed_at: string;
+    created_at: string;
     store: {
         name: string;
     } | null;
@@ -81,7 +81,7 @@ export default function ActionsIndex({ actions }: ActionsIndexProps) {
                                             </CardTitle>
                                             <CardDescription>
                                                 {new Date(
-                                                    action.performed_at,
+                                                    action.created_at,
                                                 ).toLocaleDateString('en-US', {
                                                     year: 'numeric',
                                                     month: 'long',

@@ -14,7 +14,6 @@ class Action extends Model
     {
         return [
             'photos' => 'array',
-            'performed_at' => 'datetime',
         ];
     }
 

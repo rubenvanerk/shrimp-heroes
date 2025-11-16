@@ -19,7 +19,7 @@ interface Action {
     packages_flipped: number;
     shrimp_helped: number;
     notes: string | null;
-    performed_at: string;
+    created_at: string;
     user: User;
     store: {
         name: string;

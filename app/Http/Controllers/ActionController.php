@@ -19,7 +19,7 @@ class ActionController extends Controller
         $actions = Action::query()
             ->where('user_id', auth()->id())
             ->with('store')
-            ->latest('performed_at')
+            ->latest()
             ->paginate(15);
 
         return Inertia::render('actions/index', [
