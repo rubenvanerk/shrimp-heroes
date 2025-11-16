@@ -13,6 +13,7 @@ test('authenticated users can visit the dashboard', function () {
     $this->get(route('dashboard'))->assertOk();
 });
 
+
 test('dashboard displays global stats', function () {
     $user1 = User::factory()->create();
     $user2 = User::factory()->create();

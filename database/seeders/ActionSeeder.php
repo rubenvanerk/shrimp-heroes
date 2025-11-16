@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Action;
 use App\Models\Store;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ActionSeeder extends Seeder
