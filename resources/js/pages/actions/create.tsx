@@ -42,9 +42,24 @@ interface CreateActionProps {
     userLocation?: { latitude: number; longitude: number } | null;
 }
 
-export default function CreateAction({ stores, userLocation }: CreateActionProps) {
+export default function CreateAction({ stores: initialStores, userLocation }: CreateActionProps) {
     const [isLoadingLocation, setIsLoadingLocation] = useState(false);
     const [locationError, setLocationError] = useState<string | null>(null);
+    const [stores, setStores] = useState<Store[]>(initialStores);
+    const [hasLocation, setHasLocation] = useState(!!userLocation);
+
+    // Calculate distance between two points using Haversine formula
+    const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+        const R = 6371; // Earth's radius in kilometers
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    };
 
     // Request user location on mount if not already provided
     useEffect(() => {
@@ -53,8 +68,28 @@ export default function CreateAction({ stores, userLocation }: CreateActionProps
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-                    // Reload page with location parameters
-                    window.location.href = `${create().url}?latitude=${latitude}&longitude=${longitude}`;
+
+                    // Sort stores by distance from user location
+                    const storesWithDistance = initialStores
+                        .filter(store => store.latitude !== undefined && store.longitude !== undefined)
+                        .map(store => ({
+                            ...store,
+                            distance: calculateDistance(
+                                latitude,
+                                longitude,
+                                store.latitude!,
+                                store.longitude!
+                            )
+                        }))
+                        .sort((a, b) => (a.distance || 0) - (b.distance || 0));
+
+                    // Add stores without coordinates at the end
+                    const storesWithoutCoords = initialStores
+                        .filter(store => store.latitude === undefined || store.longitude === undefined);
+
+                    setStores([...storesWithDistance, ...storesWithoutCoords]);
+                    setHasLocation(true);
+                    setIsLoadingLocation(false);
                 },
                 (error) => {
                     setIsLoadingLocation(false);
@@ -63,7 +98,7 @@ export default function CreateAction({ stores, userLocation }: CreateActionProps
                 }
             );
         }
-    }, [userLocation]);
+    }, [userLocation, initialStores]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -88,7 +123,7 @@ export default function CreateAction({ stores, userLocation }: CreateActionProps
                     </div>
                 )}
 
-                {userLocation && (
+                {hasLocation && (
                     <div className="rounded-lg border bg-green-50 p-4 text-sm text-green-800 dark:bg-green-950 dark:text-green-200">
                         ✓ Showing stores nearest to your location
                     </div>
