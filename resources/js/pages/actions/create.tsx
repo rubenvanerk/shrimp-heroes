@@ -17,6 +17,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
 import { create } from '@/routes/actions';
+import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,13 +32,39 @@ interface Store {
   address: string;
   city?: string;
   country?: string;
+  latitude?: number;
+  longitude?: number;
+  distance?: number;
 }
 
 interface CreateActionProps {
     stores: Store[];
+    userLocation?: { latitude: number; longitude: number } | null;
 }
 
-export default function CreateAction({ stores }: CreateActionProps) {
+export default function CreateAction({ stores, userLocation }: CreateActionProps) {
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+    const [locationError, setLocationError] = useState<string | null>(null);
+
+    // Request user location on mount if not already provided
+    useEffect(() => {
+        if (!userLocation && 'geolocation' in navigator) {
+            setIsLoadingLocation(true);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    // Reload page with location parameters
+                    window.location.href = `${create().url}?latitude=${latitude}&longitude=${longitude}`;
+                },
+                (error) => {
+                    setIsLoadingLocation(false);
+                    console.error('Location error:', error);
+                    setLocationError('Unable to get your location. Showing all stores.');
+                }
+            );
+        }
+    }, [userLocation]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Action" />
@@ -47,6 +74,25 @@ export default function CreateAction({ stores }: CreateActionProps) {
                     title="Report your action"
                     description="Log the packages you've flipped to help save shrimp"
                 />
+
+                {/* Location status */}
+                {isLoadingLocation && (
+                    <div className="rounded-lg border bg-blue-50 p-4 text-sm text-blue-800 dark:bg-blue-950 dark:text-blue-200">
+                        📍 Getting your location to show nearest stores...
+                    </div>
+                )}
+
+                {locationError && (
+                    <div className="rounded-lg border bg-amber-50 p-4 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                        {locationError}
+                    </div>
+                )}
+
+                {userLocation && (
+                    <div className="rounded-lg border bg-green-50 p-4 text-sm text-green-800 dark:bg-green-950 dark:text-green-200">
+                        ✓ Showing stores nearest to your location
+                    </div>
+                )}
 
                 <Form
                     {...ActionController.store.form()}
@@ -72,7 +118,17 @@ export default function CreateAction({ stores }: CreateActionProps) {
                 {stores.map((store) => (
                   <SelectItem key={store.id} value={store.id.toString()}>
                     <div className="flex flex-col">
-                      <span className="font-medium">{store.address}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{store.address}</span>
+                        {store.distance !== undefined && (
+                          <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            {store.distance < 1 
+                              ? `${(store.distance * 1000).toFixed(0)}m`
+                              : `${store.distance.toFixed(1)}km`
+                            }
+                          </span>
+                        )}
+                      </div>
                       <span className="text-xs text-muted-foreground">
                         {store.name}
                         {(store.city || store.country) && ` • ${[store.city, store.country].filter(Boolean).join(', ')}`}

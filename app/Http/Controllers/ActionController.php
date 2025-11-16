@@ -32,12 +32,31 @@ class ActionController extends Controller
      */
     public function create(): Response
     {
-        $stores = Store::query()
-            ->orderBy('address')
-            ->get(['id', 'name', 'address', 'city', 'country']);
+        $userLat = request('latitude');
+        $userLon = request('longitude');
+
+        $query = Store::query()->select(['id', 'name', 'address', 'city', 'country', 'latitude', 'longitude']);
+
+        // If user location is provided, calculate distance and sort by it
+        if ($userLat !== null && $userLon !== null) {
+            // Haversine formula to calculate distance in kilometers
+            $query->selectRaw(
+                '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
+                [$userLat, $userLon, $userLat]
+            )
+                ->whereNotNull('latitude')
+                ->whereNotNull('longitude')
+                ->orderBy('distance');
+        } else {
+            // Default sorting by address
+            $query->orderBy('address');
+        }
+
+        $stores = $query->get();
 
         return Inertia::render('actions/create', [
             'stores' => $stores,
+            'userLocation' => $userLat && $userLon ? ['latitude' => $userLat, 'longitude' => $userLon] : null,
         ]);
     }
 
