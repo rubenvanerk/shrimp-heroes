@@ -1,9 +1,11 @@
 import { Leaderboard } from '@/components/leaderboard';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem, User } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
 
 interface LeaderboardUser extends User {
     total_shrimp_helped: number;
@@ -39,6 +41,16 @@ export default function Dashboard({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-2xl font-bold">Dashboard</h1>
+                    <Button asChild size="lg" className="gap-2">
+                        <Link href="/actions/create">
+                            <Plus className="size-5" />
+                            Record Action
+                        </Link>
+                    </Button>
+                </div>
+
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     <Card className="bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/20 dark:to-purple-900/10">
                         <CardHeader>
