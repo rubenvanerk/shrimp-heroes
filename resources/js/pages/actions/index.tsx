@@ -42,7 +42,7 @@ export default function ActionsIndex({ actions }: ActionsIndexProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My Actions" />
 
-            <div className="space-y-6">
+            <div className="space-y-6 p-4">
                 <div className="flex items-center justify-between">
                     <HeadingSmall
                         title="My Actions"

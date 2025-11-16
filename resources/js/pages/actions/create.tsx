@@ -69,7 +69,7 @@ export default function CreateAction({ stores, userLocation }: CreateActionProps
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Action" />
 
-            <div className="mx-auto max-w-2xl space-y-6">
+            <div className="mx-auto max-w-2xl space-y-6 p-4">
                 <HeadingSmall
                     title="Report your action"
                     description="Log the packages you've flipped to help save shrimp"
