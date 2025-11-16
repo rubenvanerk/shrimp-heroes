@@ -21,11 +21,11 @@ class DashboardController extends Controller
         ];
 
         $leaderboard = User::query()
-            ->select('users.*')
+            ->select('users.id', 'users.name', 'users.email', 'users.avatar')
             ->selectRaw('COALESCE(SUM(actions.packages_flipped), 0) as total_packages_flipped')
             ->selectRaw('COUNT(actions.id) as total_actions')
             ->leftJoin('actions', 'users.id', '=', 'actions.user_id')
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.email', 'users.avatar')
             ->orderByDesc('total_packages_flipped')
             ->limit(10)
             ->get()
@@ -37,12 +37,12 @@ class DashboardController extends Controller
 
         $currentUser = auth()->user();
         $currentUserStats = User::query()
-            ->select('users.*')
+            ->select('users.id', 'users.name', 'users.email', 'users.avatar')
             ->selectRaw('COALESCE(SUM(actions.packages_flipped), 0) as total_packages_flipped')
             ->selectRaw('COUNT(actions.id) as total_actions')
             ->leftJoin('actions', 'users.id', '=', 'actions.user_id')
             ->where('users.id', $currentUser->id)
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.email', 'users.avatar')
             ->first();
 
         $currentUserStats->total_shrimp_helped = $currentUserStats->total_packages_flipped * $shrimpPerPackage;
