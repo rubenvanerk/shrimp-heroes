@@ -14,43 +14,35 @@ const breadcrumbs: BreadcrumbItem[] = [
 const steps = [
     {
         number: 1,
-        title: 'Visit Your Local Aldi',
+        title: 'Visit an Aldi near you and find the shrimp products',
         description:
-            'Head to the nearest Aldi store. The shrimp products are usually in the frozen or refrigerated sections.',
+            'Head to the nearest Aldi store. Look for the cooled fish and seafood section, and for the farmed shrimp products. They might carry an ASC logo.',
         icon: Store,
         color: 'bg-purple-100 dark:bg-purple-900/20',
     },
     {
         number: 2,
-        title: 'Locate Shrimp Products',
-        description: 'Look for any packages containing shrimp - frozen shrimp, breaded shrimp, shrimp rings, etc.',
-        icon: Eye,
+        title: 'Flip as many products as you can',
+        description: 'Carefully turn the packages upside down on the shelf. This makes them less appealing to shoppers and requires staff to fix them.',
+        icon: Hand,
         color: 'bg-pink-100 dark:bg-pink-900/20',
     },
     {
         number: 3,
-        title: 'Flip Them Upside Down',
-        description:
-            'Carefully turn the packages upside down on the shelf. This makes them less appealing to shoppers and requires staff to fix them.',
-        icon: Hand,
+        title: 'Take a Quick Photo',
+        description: "Snap a photo of your work if you'd like to share proof of your action!",
+        icon: Camera,
         color: 'bg-blue-100 dark:bg-blue-900/20',
     },
     {
         number: 4,
-        title: 'Take a Quick Photo (Optional)',
-        description: "Snap a photo of your work if you'd like to share proof of your action!",
-        icon: Camera,
+        title: 'Report Your Action',
+        description: 'Tell the world of your deeds! Tell us how many packages you flipped, select your Aldi store from the list, and upload a photo for verification. Every package = 34 shrimp helped!',
+        icon: BookOpen,
         color: 'bg-orange-100 dark:bg-orange-900/20',
     },
     {
         number: 5,
-        title: 'Report Your Action',
-        description: 'Use the dashboard to log how many products you flipped. Every package = 34 shrimp helped!',
-        icon: BookOpen,
-        color: 'bg-purple-100 dark:bg-purple-900/20',
-    },
-    {
-        number: 6,
         title: 'Feel Amazing!',
         description: "You've just taken a stand for shrimp welfare. You're making a real difference!",
         icon: Heart,
@@ -78,6 +70,10 @@ const faqs = [
     {
         question: 'How many products should I flip?',
         answer: 'As many as you feel comfortable with! Even flipping one package makes a difference. Some heroes flip entire sections.',
+    },
+    {
+        question: 'How did you calculate that each package helps 34 shrimp?',
+        answer: 'Great question! Here\'s the math: Convincing Aldi to introduce electrical stunning would help an estimated 340 million shrimp per year. We estimate we need to flip 1 million products to win the campaign. While store protest actions like ours are powerful, they\'re part of a larger movement—we estimate they account for about 10% of the campaign\'s success. This means each product flipped helps approximately 34 shrimp per year in expectation. Every flip counts!',
     },
 ];
 
