@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreActionRequest;
 use App\Models\Action;
+use App\Models\Store;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -31,7 +32,13 @@ class ActionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('actions/create');
+        $stores = Store::query()
+            ->orderBy('address')
+            ->get(['id', 'name', 'address', 'city', 'country']);
+
+        return Inertia::render('actions/create', [
+            'stores' => $stores,
+        ]);
     }
 
     /**
