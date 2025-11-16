@@ -6,6 +6,7 @@ use App\Http\Requests\StoreActionRequest;
 use App\Models\Action;
 use App\Models\Store;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -65,12 +66,23 @@ class ActionController extends Controller
      */
     public function store(StoreActionRequest $request): RedirectResponse
     {
+        $photoPaths = [];
+
+        // Handle photo uploads
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                // Store in storage/app/public/actions directory
+                $path = $photo->store('actions', 'public');
+                $photoPaths[] = $path;
+            }
+        }
+
         Action::create([
             'user_id' => $request->user()->id,
             'store_id' => $request->input('store_id'),
             'packages_flipped' => $request->input('packages_flipped'),
             'notes' => $request->input('notes'),
-            'photos' => $request->input('photos', []),
+            'photos' => $photoPaths,
             'performed_at' => $request->input('performed_at'),
         ]);
 
