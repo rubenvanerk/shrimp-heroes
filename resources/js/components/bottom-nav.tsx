@@ -55,7 +55,7 @@ export function BottomNav() {
                 {/* Center action button */}
                 <Link
                     href="/actions/create"
-                    className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-orange-100 to-pink-100 dark:from-orange-950/40 dark:to-pink-950/40 hover:from-orange-200 hover:to-pink-200 dark:hover:from-orange-900/50 dark:hover:to-pink-900/50 active:from-orange-300 active:to-pink-300 active:scale-95 shadow-xl -translate-y-6 transition-transform hover:scale-110 active:shadow-md flex-shrink-0 border border-orange-200 dark:border-orange-900/50"
+                    className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-orange-200 to-pink-200 dark:from-orange-400 dark:to-pink-400 hover:from-orange-300 hover:to-pink-300 dark:hover:from-orange-500 dark:hover:to-pink-500 active:from-orange-400 active:to-pink-400 dark:active:from-orange-600 dark:active:to-pink-600 active:scale-95 shadow-xl -translate-y-6 transition-transform hover:scale-110 active:shadow-md flex-shrink-0"
                 >
                     <span className="text-4xl drop-shadow">🦐</span>
                 </Link>
