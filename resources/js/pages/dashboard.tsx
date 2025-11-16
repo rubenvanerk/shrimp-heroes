@@ -67,7 +67,7 @@ export default function Dashboard({
                                 {globalStats.totalShrimpHelped.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
-                                Total shrimp saved from cruel fate
+                                Total shrimp helped
                             </p>
                         </CardContent>
                     </Card>
