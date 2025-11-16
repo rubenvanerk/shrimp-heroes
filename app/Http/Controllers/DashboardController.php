@@ -47,7 +47,7 @@ class DashboardController extends Controller
 
         $recentActions = Action::query()
             ->with(['user', 'store'])
-            ->latest('performed_at')
+            ->latest()
             ->limit(5)
             ->get()
             ->map(function ($action) use ($shrimpPerPackage) {
