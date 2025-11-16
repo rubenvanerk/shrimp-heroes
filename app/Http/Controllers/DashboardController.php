@@ -44,13 +44,14 @@ class DashboardController extends Controller
                 LEFT JOIN actions a2 ON u2.id = a2.user_id
                 GROUP BY u2.id
                 HAVING COALESCE(SUM(a2.packages_flipped), 0) > COALESCE(SUM(actions.packages_flipped), 0)
-            ) + 1 as rank')
+            ) + 1 as user_rank')
             ->leftJoin('actions', 'users.id', '=', 'actions.user_id')
             ->where('users.id', $currentUser->id)
             ->groupBy('users.id')
             ->first();
 
         $currentUserStats->total_shrimp_helped = $currentUserStats->total_packages_flipped * $shrimpPerPackage;
+        $currentUserStats->rank = $currentUserStats->user_rank;
 
         $currentUserInTop10 = $leaderboard->contains('id', $currentUser->id);
 
