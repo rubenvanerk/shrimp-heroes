@@ -34,7 +34,7 @@ const impactSteps = [
     },
     {
         step: 'Aldi mandates their farmers to end the worst shrimp cruelty',
-        description: 'By updating their animal welfare guidelines, Aldi will follow. Hundreds of actions, together with store protests, emails and ads make clear that people won\'t tolerate.',
+        description: 'By updating their animal welfare guidelines, Aldi will follow. Hundreds of actions together with store protests, emails and ads make clear that people won\'t tolerate.',
         color: 'bg-orange-100 dark:bg-orange-900/20',
     },
     {
