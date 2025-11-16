@@ -40,18 +40,21 @@ class DashboardController extends Controller
             ->select('users.*')
             ->selectRaw('COALESCE(SUM(actions.packages_flipped), 0) as total_packages_flipped')
             ->selectRaw('COUNT(actions.id) as total_actions')
-            ->selectRaw('(SELECT COUNT(*) FROM users u2
-                LEFT JOIN actions a2 ON u2.id = a2.user_id
-                GROUP BY u2.id
-                HAVING COALESCE(SUM(a2.packages_flipped), 0) > COALESCE(SUM(actions.packages_flipped), 0)
-            ) + 1 as user_rank')
             ->leftJoin('actions', 'users.id', '=', 'actions.user_id')
             ->where('users.id', $currentUser->id)
             ->groupBy('users.id')
             ->first();
 
         $currentUserStats->total_shrimp_helped = $currentUserStats->total_packages_flipped * $shrimpPerPackage;
-        $currentUserStats->rank = $currentUserStats->user_rank;
+
+        // Calculate rank separately to avoid subquery issues
+        $usersWithMorePackages = User::query()
+            ->leftJoin('actions', 'users.id', '=', 'actions.user_id')
+            ->groupBy('users.id')
+            ->havingRaw('COALESCE(SUM(actions.packages_flipped), 0) > ?', [$currentUserStats->total_packages_flipped])
+            ->count();
+
+        $currentUserStats->rank = $usersWithMorePackages + 1;
 
         $currentUserInTop10 = $leaderboard->contains('id', $currentUser->id);
 
