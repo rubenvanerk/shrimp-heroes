@@ -27,7 +27,7 @@ class StoreActionRequest extends FormRequest
             'packages_flipped' => ['required', 'integer', 'min:1'],
             'notes' => ['nullable', 'string', 'max:1000'],
             'photos' => ['nullable', 'array', 'max:5'],
-            'photos.*' => ['string', 'max:500'],
+            'photos.*' => ['image', 'max:5120'], // Max 5MB per image
         ];
     }
 
@@ -42,6 +42,8 @@ class StoreActionRequest extends FormRequest
             'packages_flipped.required' => 'Please enter the number of packages flipped.',
             'packages_flipped.min' => 'You must flip at least 1 package.',
             'photos.max' => 'You can upload a maximum of 5 photos.',
+            'photos.*.image' => 'Each file must be an image.',
+            'photos.*.max' => 'Each photo must be less than 5MB.',
         ];
     }
 }
