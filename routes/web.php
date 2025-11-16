@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\StoreSearchController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -48,6 +49,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('about', function () {
         return Inertia::render('about');
     })->name('about');
+
+    // API endpoints
+    Route::get('api/stores/search', StoreSearchController::class)->name('api.stores.search');
 });
 
 require __DIR__.'/settings.php';

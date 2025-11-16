@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreActionRequest;
 use App\Models\Action;
-use App\Models\Store;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -33,32 +32,7 @@ class ActionController extends Controller
      */
     public function create(): Response
     {
-        $userLat = request('latitude');
-        $userLon = request('longitude');
-
-        $query = Store::query()->select(['id', 'name', 'address', 'city', 'country', 'latitude', 'longitude']);
-
-        // If user location is provided, calculate distance and sort by it
-        if ($userLat !== null && $userLon !== null) {
-            // Haversine formula to calculate distance in kilometers
-            $query->selectRaw(
-                '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
-                [$userLat, $userLon, $userLat]
-            )
-                ->whereNotNull('latitude')
-                ->whereNotNull('longitude')
-                ->orderBy('distance');
-        } else {
-            // Default sorting by address
-            $query->orderBy('address');
-        }
-
-        $stores = $query->get();
-
-        return Inertia::render('actions/create', [
-            'stores' => $stores,
-            'userLocation' => $userLat && $userLon ? ['latitude' => $userLat, 'longitude' => $userLon] : null,
-        ]);
+        return Inertia::render('actions/create');
     }
 
     /**

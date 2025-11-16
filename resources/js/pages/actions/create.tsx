@@ -1,16 +1,10 @@
 import ActionController from '@/actions/App/Http/Controllers/ActionController';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
+import { StoreCombobox } from '@/components/store-combobox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -27,27 +21,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface Store {
-  id: number;
-  name: string;
-  address: string;
-  city?: string;
-  country?: string;
-  latitude?: number;
-  longitude?: number;
-  distance?: number;
-}
-
 interface CreateActionProps {
-    stores: Store[];
     userLocation?: { latitude: number; longitude: number } | null;
 }
 
-export default function CreateAction({ stores: initialStores, userLocation }: CreateActionProps) {
+export default function CreateAction({ userLocation: initialUserLocation }: CreateActionProps) {
     const [isLoadingLocation, setIsLoadingLocation] = useState(false);
     const [locationError, setLocationError] = useState<string | null>(null);
-    const [stores, setStores] = useState<Store[]>(initialStores);
-    const [hasLocation, setHasLocation] = useState(!!userLocation);
+    const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(initialUserLocation || null);
     const [photos, setPhotos] = useState<File[]>([]);
     const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
     const [photoError, setPhotoError] = useState<string | null>(null);
@@ -60,19 +41,6 @@ export default function CreateAction({ stores: initialStores, userLocation }: Cr
         photos: [] as File[],
     });
 
-    // Calculate distance between two points using Haversine formula
-    const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-        const R = 6371; // Earth's radius in kilometers
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
-    };
-
     // Request user location on mount if not already provided
     useEffect(() => {
         if (!userLocation && 'geolocation' in navigator) {
@@ -80,27 +48,7 @@ export default function CreateAction({ stores: initialStores, userLocation }: Cr
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-
-                    // Sort stores by distance from user location
-                    const storesWithDistance = initialStores
-                        .filter(store => store.latitude !== undefined && store.longitude !== undefined)
-                        .map(store => ({
-                            ...store,
-                            distance: calculateDistance(
-                                latitude,
-                                longitude,
-                                store.latitude!,
-                                store.longitude!
-                            )
-                        }))
-                        .sort((a, b) => (a.distance || 0) - (b.distance || 0));
-
-                    // Add stores without coordinates at the end
-                    const storesWithoutCoords = initialStores
-                        .filter(store => store.latitude === undefined || store.longitude === undefined);
-
-                    setStores([...storesWithDistance, ...storesWithoutCoords]);
-                    setHasLocation(true);
+                    setUserLocation({ latitude, longitude });
                     setIsLoadingLocation(false);
                 },
                 (error) => {
@@ -110,7 +58,7 @@ export default function CreateAction({ stores: initialStores, userLocation }: Cr
                 }
             );
         }
-    }, [userLocation, initialStores]);
+    }, [userLocation]);
 
     // Handle photo upload
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,7 +156,7 @@ export default function CreateAction({ stores: initialStores, userLocation }: Cr
                     </div>
                 )}
 
-                {hasLocation && (
+                {userLocation && (
                     <div className="rounded-lg border bg-green-50 p-4 text-sm text-green-800 dark:bg-green-950 dark:text-green-200">
                         ✓ Showing stores nearest to your location
                     </div>
@@ -217,46 +165,12 @@ export default function CreateAction({ stores: initialStores, userLocation }: Cr
                 <form onSubmit={handleSubmit} className="space-y-6">
                         <>
                             {/* Store Selection */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="store_id">
-                                    Store (optional)
-                                </Label>
-
-                                <Select
-                                    name="store_id"
-                                    value={data.store_id}
-                                    onValueChange={(value) => setData('store_id', value)}
-                                >
-                                                  <SelectTrigger>
-                <SelectValue placeholder="Select a store" />
-              </SelectTrigger>
-              <SelectContent>
-                {stores.map((store) => (
-                  <SelectItem key={store.id} value={store.id.toString()}>
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{store.address}</span>
-                        {store.distance !== undefined && (
-                          <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                            {store.distance < 1 
-                              ? `${(store.distance * 1000).toFixed(0)}m`
-                              : `${store.distance.toFixed(1)}km`
-                            }
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {store.name}
-                        {(store.city || store.country) && ` • ${[store.city, store.country].filter(Boolean).join(', ')}`}
-                      </span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-                                </Select>
-
-                                <InputError message={errors.store_id} />
-                            </div>
+                            <StoreCombobox
+                                value={data.store_id}
+                                onChange={(value) => setData('store_id', value)}
+                                userLocation={userLocation}
+                                error={errors.store_id}
+                            />
 
                             {/* Packages Flipped */}
                             <div className="grid gap-2">
