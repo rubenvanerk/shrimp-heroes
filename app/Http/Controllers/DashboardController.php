@@ -20,43 +20,30 @@ class DashboardController extends Controller
             'totalActions' => Action::count(),
         ];
 
-        $leaderboard = User::query()
-            ->select('users.id', 'users.name', 'users.email', 'users.avatar')
-            ->selectRaw('COALESCE(SUM(actions.packages_flipped), 0) as total_packages_flipped')
-            ->selectRaw('COUNT(actions.id) as total_actions')
-            ->leftJoin('actions', 'users.id', '=', 'actions.user_id')
-            ->groupBy('users.id', 'users.name', 'users.email', 'users.avatar')
-            ->orderByDesc('total_packages_flipped')
-            ->limit(10)
+        // Get all users with their action stats
+        $allUsers = User::query()
+            ->withSum('actions as total_packages_flipped', 'packages_flipped')
+            ->withCount('actions as total_actions')
             ->get()
             ->map(function ($user) use ($shrimpPerPackage) {
+                $user->total_packages_flipped = $user->total_packages_flipped ?? 0;
                 $user->total_shrimp_helped = $user->total_packages_flipped * $shrimpPerPackage;
 
                 return $user;
-            });
+            })
+            ->sortByDesc('total_packages_flipped')
+            ->values();
 
+        // Top 10 leaderboard
+        $leaderboard = $allUsers->take(10);
+
+        // Current user stats with rank
         $currentUser = auth()->user();
-        $currentUserStats = User::query()
-            ->select('users.id', 'users.name', 'users.email', 'users.avatar')
-            ->selectRaw('COALESCE(SUM(actions.packages_flipped), 0) as total_packages_flipped')
-            ->selectRaw('COUNT(actions.id) as total_actions')
-            ->leftJoin('actions', 'users.id', '=', 'actions.user_id')
-            ->where('users.id', $currentUser->id)
-            ->groupBy('users.id', 'users.name', 'users.email', 'users.avatar')
-            ->first();
+        $currentUserIndex = $allUsers->search(fn ($user) => $user->id === $currentUser->id);
+        $currentUserStats = $allUsers[$currentUserIndex];
+        $currentUserStats->rank = $currentUserIndex + 1;
 
-        $currentUserStats->total_shrimp_helped = $currentUserStats->total_packages_flipped * $shrimpPerPackage;
-
-        // Calculate rank separately to avoid subquery issues
-        $usersWithMorePackages = User::query()
-            ->leftJoin('actions', 'users.id', '=', 'actions.user_id')
-            ->groupBy('users.id')
-            ->havingRaw('COALESCE(SUM(actions.packages_flipped), 0) > ?', [$currentUserStats->total_packages_flipped])
-            ->count();
-
-        $currentUserStats->rank = $usersWithMorePackages + 1;
-
-        $currentUserInTop10 = $leaderboard->contains('id', $currentUser->id);
+        $currentUserInTop10 = $currentUserIndex < 10;
 
         $recentActions = Action::query()
             ->with(['user', 'store'])
