@@ -119,7 +119,9 @@ export default function ActionsIndex({ actions }: ActionsIndexProps) {
                 {actions.data.length === 0 ? (
                     <Card>
                         <CardContent className="flex flex-col items-center justify-center py-12">
-                            <div className="text-6xl">🦐</div>
+                            <div className="flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-orange-100 to-pink-100 dark:from-orange-950/40 dark:to-pink-950/40 border border-orange-200 dark:border-orange-900/50 shadow-lg">
+                                <span className="text-6xl drop-shadow">🦐</span>
+                            </div>
                             <h3 className="mt-4 text-lg font-semibold">
                                 No actions reported yet
                             </h3>
