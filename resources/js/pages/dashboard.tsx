@@ -13,6 +13,7 @@ interface LeaderboardUser extends User {
 
 interface DashboardProps {
     globalStats: {
+        totalPackagesFlipped: number;
         totalShrimpHelped: number;
         totalActions: number;
     };
@@ -38,19 +39,19 @@ export default function Dashboard({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-sm font-medium text-muted-foreground">
-                                Global Shrimp Helped
+                                Packages Flipped
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold tabular-nums">
-                                {globalStats.totalShrimpHelped.toLocaleString()}
+                                {globalStats.totalPackagesFlipped.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
-                                Total packages flipped by all heroes
+                                Total packages flipped globally
                             </p>
                         </CardContent>
                     </Card>
@@ -58,7 +59,23 @@ export default function Dashboard({
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-sm font-medium text-muted-foreground">
-                                Global Actions Taken
+                                Shrimp Helped
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-3xl font-bold tabular-nums">
+                                {globalStats.totalShrimpHelped.toLocaleString()}
+                            </div>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                                Total shrimp saved from cruel fate
+                            </p>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-sm font-medium text-muted-foreground">
+                                Actions Taken
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
