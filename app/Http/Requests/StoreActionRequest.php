@@ -27,7 +27,7 @@ class StoreActionRequest extends FormRequest
             'packages_flipped' => ['required', 'integer', 'min:1'],
             'notes' => ['nullable', 'string', 'max:1000'],
             'photos' => ['nullable', 'array', 'max:5'],
-            'photos.*' => ['string', 'max:500'],
+            'photos.*' => ['image', 'max:5120'], // Max 5MB per image
             'performed_at' => ['required', 'date', 'before_or_equal:now'],
         ];
     }
@@ -45,6 +45,8 @@ class StoreActionRequest extends FormRequest
             'performed_at.required' => 'Please select when this action was performed.',
             'performed_at.before_or_equal' => 'Action date cannot be in the future.',
             'photos.max' => 'You can upload a maximum of 5 photos.',
+            'photos.*.image' => 'Each file must be an image.',
+            'photos.*.max' => 'Each photo must be less than 5MB.',
         ];
     }
 }
