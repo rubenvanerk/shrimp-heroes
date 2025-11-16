@@ -28,7 +28,11 @@ class DatabaseSeeder extends Seeder
         $users = User::factory()->count(25)->create();
         $allUsers = $users->push($testUser);
 
-        $stores = Store::factory()->count(15)->create();
+        $stores = Store::all();
+
+        if ($stores->isEmpty()) {
+            $stores = Store::factory()->count(15)->create();
+        }
 
         foreach ($allUsers as $index => $user) {
             $actionCount = fake()->numberBetween(1, 20);
