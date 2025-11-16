@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreActionRequest;
+use App\Jobs\VerifyActionJob;
 use App\Models\Action;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
@@ -18,9 +19,17 @@ class ActionController extends Controller
     {
         $actions = Action::query()
             ->where('user_id', auth()->id())
-            ->with('store')
+            ->with(['store', 'verification'])
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->through(fn ($action) => [
+                'id' => $action->id,
+                'packages_flipped' => $action->packages_flipped,
+                'notes' => $action->notes,
+                'created_at' => $action->created_at,
+                'verification_status' => $action->verification_status,
+                'store' => $action->store,
+            ]);
 
         return Inertia::render('actions/index', [
             'actions' => $actions,
@@ -41,23 +50,26 @@ class ActionController extends Controller
     public function store(StoreActionRequest $request): RedirectResponse
     {
         $photoPaths = [];
+        $photoUrls = [];
 
-        // Handle photo uploads
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                // Store in storage/app/public/actions directory
                 $path = $photo->store('actions', 'public');
                 $photoPaths[] = $path;
+                $url = Storage::disk('public')->url($path);
+                $photoUrls[] = preg_replace('#(?<!:)//+#', '/', $url);
             }
         }
 
-        Action::create([
+        $action = Action::create([
             'user_id' => $request->user()->id,
             'store_id' => $request->input('store_id'),
             'packages_flipped' => $request->input('packages_flipped'),
             'notes' => $request->input('notes'),
-            'photos' => $photoPaths,
+            'photos' => $photoUrls,
         ]);
+
+        VerifyActionJob::dispatch($action);
 
         return to_route('actions.index')->with('success', 'Action reported successfully!');
     }

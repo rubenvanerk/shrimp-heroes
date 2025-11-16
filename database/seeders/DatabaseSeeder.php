@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Action;
+use App\Models\ActionVerification;
 use App\Models\Store;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -32,13 +33,27 @@ class DatabaseSeeder extends Seeder
         foreach ($allUsers as $index => $user) {
             $actionCount = fake()->numberBetween(1, 20);
 
-            Action::factory()
+            $actions = Action::factory()
                 ->count($actionCount)
                 ->for($user)
                 ->recycle($stores)
                 ->create([
                     'packages_flipped' => fake()->numberBetween(1, 100),
                 ]);
+
+            foreach ($actions as $action) {
+                $shouldHaveVerification = fake()->boolean(85);
+
+                if ($shouldHaveVerification) {
+                    $shouldFail = fake()->boolean(5);
+
+                    if ($shouldFail) {
+                        ActionVerification::factory()->failed()->for($action)->create();
+                    } else {
+                        ActionVerification::factory()->for($action)->create();
+                    }
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 import HeadingSmall from '@/components/heading-small';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -8,9 +9,10 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/react';
 import { create, index } from '@/routes/actions';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, router } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -19,11 +21,55 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+function getVerificationBadge(status: 'pending' | 'verified' | 'rejected') {
+    switch (status) {
+        case 'verified':
+            return (
+                <Badge
+                    variant="default"
+                    className="bg-green-600 dark:bg-green-700"
+                >
+                    ✓ Verified
+                </Badge>
+            );
+        case 'rejected':
+            return <Badge variant="destructive">✗ Rejected</Badge>;
+        case 'pending':
+        default:
+            return (
+                <Badge variant="secondary" className="gap-2">
+                    <svg
+                        className="size-3 animate-spin"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                        ></circle>
+                        <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                    </svg>
+                    Verifying...
+                </Badge>
+            );
+    }
+}
+
 interface Action {
     id: number;
     packages_flipped: number;
     notes: string | null;
     created_at: string;
+    verification_status: 'pending' | 'verified' | 'rejected';
     store: {
         name: string;
     } | null;
@@ -38,6 +84,22 @@ interface ActionsIndexProps {
 }
 
 export default function ActionsIndex({ actions }: ActionsIndexProps) {
+    const hasPendingVerifications = actions.data.some(
+        (action) => action.verification_status === 'pending',
+    );
+
+    useEffect(() => {
+        if (!hasPendingVerifications) {
+            return;
+        }
+
+        const interval = setInterval(() => {
+            router.reload({ only: ['actions'], preserveScroll: true });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [hasPendingVerifications]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My Actions" />
@@ -62,7 +124,8 @@ export default function ActionsIndex({ actions }: ActionsIndexProps) {
                                 No actions reported yet
                             </h3>
                             <p className="mt-2 text-sm text-muted-foreground">
-                                Start reporting your shrimp-saving actions today!
+                                Start reporting your shrimp-saving actions
+                                today!
                             </p>
                             <Link href={create().url} className="mt-4">
                                 <Button>Report Your First Action</Button>
@@ -77,7 +140,8 @@ export default function ActionsIndex({ actions }: ActionsIndexProps) {
                                     <div className="flex items-start justify-between">
                                         <div>
                                             <CardTitle>
-                                                {action.packages_flipped} packages flipped
+                                                {action.packages_flipped}{' '}
+                                                packages flipped
                                             </CardTitle>
                                             <CardDescription>
                                                 {new Date(
@@ -91,6 +155,9 @@ export default function ActionsIndex({ actions }: ActionsIndexProps) {
                                                 })}
                                             </CardDescription>
                                         </div>
+                                        {getVerificationBadge(
+                                            action.verification_status,
+                                        )}
                                     </div>
                                 </CardHeader>
                                 {(action.notes || action.store) && (

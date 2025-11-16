@@ -26,4 +26,26 @@ class Action extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    public function verification()
+    {
+        return $this->hasOne(ActionVerification::class);
+    }
+
+    public function getVerificationStatusAttribute(): string
+    {
+        if (! $this->verification) {
+            return 'pending';
+        }
+
+        if ($this->verification->error_message) {
+            return 'pending';
+        }
+
+        if ($this->verification->ai_confidence_score >= 80) {
+            return 'verified';
+        }
+
+        return 'rejected';
+    }
 }
