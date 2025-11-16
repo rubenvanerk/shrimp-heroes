@@ -4,6 +4,13 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -18,7 +25,19 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function CreateAction() {
+interface Store {
+  id: number;
+  name: string;
+  address: string;
+  city?: string;
+  country?: string;
+}
+
+interface CreateActionProps {
+    stores: Store[];
+}
+
+export default function CreateAction({ stores }: CreateActionProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Action" />
@@ -39,6 +58,34 @@ export default function CreateAction() {
                 >
                     {({ errors, processing, recentlySuccessful }) => (
                         <>
+                            {/* Store Selection */}
+                            <div className="grid gap-2">
+                                <Label htmlFor="store_id">
+                                    Store (optional)
+                                </Label>
+
+                                <Select name="store_id">
+                                                  <SelectTrigger>
+                <SelectValue placeholder="Select a store" />
+              </SelectTrigger>
+              <SelectContent>
+                {stores.map((store) => (
+                  <SelectItem key={store.id} value={store.id.toString()}>
+                    <div className="flex flex-col">
+                      <span className="font-medium">{store.address}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {store.name}
+                        {(store.city || store.country) && ` • ${[store.city, store.country].filter(Boolean).join(', ')}`}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+                                </Select>
+
+                                <InputError message={errors.store_id} />
+                            </div>
+
                             {/* Packages Flipped */}
                             <div className="grid gap-2">
                                 <Label htmlFor="packages_flipped">
@@ -96,9 +143,6 @@ export default function CreateAction() {
 
                                 <InputError message={errors.notes} />
                             </div>
-
-                            {/* Store ID - Hidden for now, can be enhanced later */}
-                            <input type="hidden" name="store_id" value="" />
 
                             {/* Submit Button */}
                             <div className="flex items-center gap-4">
