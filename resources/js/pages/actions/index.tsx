@@ -81,9 +81,14 @@ interface ActionsIndexProps {
         current_page: number;
         last_page: number;
     };
+    userStats: {
+        totalPackagesFlipped: number;
+        totalShrimpHelped: number;
+        totalActions: number;
+    };
 }
 
-export default function ActionsIndex({ actions }: ActionsIndexProps) {
+export default function ActionsIndex({ actions, userStats }: ActionsIndexProps) {
     const hasPendingVerifications = actions.data.some(
         (action) => action.verification_status === 'pending',
     );
@@ -114,6 +119,56 @@ export default function ActionsIndex({ actions }: ActionsIndexProps) {
                     <Link href={create().url}>
                         <Button>Report New Action</Button>
                     </Link>
+                </div>
+
+                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                    <Card className="bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/20 dark:to-purple-900/10">
+                        <CardHeader>
+                            <CardTitle className="text-sm font-medium text-muted-foreground">
+                                Packages Flipped
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-3xl font-bold tabular-nums text-purple-700 dark:text-purple-400">
+                                {userStats.totalPackagesFlipped.toLocaleString()}
+                            </div>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                                Total packages you've flipped
+                            </p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10">
+                        <CardHeader>
+                            <CardTitle className="text-sm font-medium text-muted-foreground">
+                                Shrimp Helped
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-3xl font-bold tabular-nums text-blue-700 dark:text-blue-400">
+                                {userStats.totalShrimpHelped.toLocaleString()}
+                            </div>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                                Total shrimp you've helped
+                            </p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-orange-900/10">
+                        <CardHeader>
+                            <CardTitle className="text-sm font-medium text-muted-foreground">
+                                Actions Taken
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-3xl font-bold tabular-nums text-orange-700 dark:text-orange-400">
+                                {userStats.totalActions.toLocaleString()}
+                            </div>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                                Your heroic actions recorded
+                            </p>
+                        </CardContent>
+                    </Card>
                 </div>
 
                 {actions.data.length === 0 ? (

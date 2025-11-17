@@ -17,8 +17,13 @@ class ActionController extends Controller
      */
     public function index(): Response
     {
+        $userId = auth()->id();
+
+        $totalPackagesFlipped = (int) Action::where('user_id', $userId)->sum('packages_flipped');
+        $totalActions = (int) Action::where('user_id', $userId)->count();
+
         $actions = Action::query()
-            ->where('user_id', auth()->id())
+            ->where('user_id', $userId)
             ->with(['store', 'verification'])
             ->latest()
             ->paginate(15)
@@ -33,6 +38,11 @@ class ActionController extends Controller
 
         return Inertia::render('actions/index', [
             'actions' => $actions,
+            'userStats' => [
+                'totalPackagesFlipped' => $totalPackagesFlipped,
+                'totalShrimpHelped' => $totalPackagesFlipped * config('shrimp-heroes.shrimp_per_package'),
+                'totalActions' => $totalActions,
+            ],
         ]);
     }
 
