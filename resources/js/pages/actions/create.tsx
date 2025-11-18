@@ -242,7 +242,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                     </div>
 
                     {/* Store Selection - Always Visible */}
-                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border w-full overflow-hidden">
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border w-full">
                         <StoreCombobox
                             value={data.store_id}
                             onChange={(value) => setData('store_id', value)}
