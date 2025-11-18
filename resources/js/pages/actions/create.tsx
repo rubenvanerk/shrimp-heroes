@@ -153,7 +153,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Action" />
 
-            <div className="mx-auto max-w-2xl space-y-6 p-4 pb-24 md:pb-4">
+            <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-4 pb-24 md:pb-4">
                 <div className="text-center space-y-2">
                     <h1 className="text-4xl md:text-5xl font-black text-purple-600 dark:text-purple-400">
                         🦐 Shrimp Hero Report!
@@ -189,35 +189,34 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                             I just flipped...
                         </div>
                         
-                        <div className="flex items-center justify-center gap-4">
+                        <div className="flex items-center justify-center gap-2 sm:gap-4">
                             {/* Decrement Button */}
                             <Button
                                 type="button"
                                 variant="outline"
                                 size="lg"
                                 onClick={decrementPackages}
-                                className="h-16 w-16 rounded-full text-2xl font-bold hover:bg-purple-50 dark:hover:bg-purple-950"
+                                className="h-12 w-12 sm:h-16 sm:w-16 rounded-full text-2xl font-bold hover:bg-purple-50 dark:hover:bg-purple-950 shrink-0"
                                 disabled={!data.packages_flipped || parseInt(data.packages_flipped) <= 1}
                             >
-                                <Minus className="h-8 w-8" />
+                                <Minus className="h-6 w-6 sm:h-8 sm:w-8" />
                             </Button>
 
                             {/* GIANT Number Input */}
-                            <div className="relative">
+                            <div className="relative flex-shrink-0">
                                 <input
                                     id="packages_flipped"
                                     name="packages_flipped"
                                     type="number"
                                     min="1"
-                                    className="text-center text-6xl md:text-8xl font-black bg-transparent border-0 outline-none w-32 md:w-48 text-purple-600 dark:text-purple-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    className="text-center text-6xl font-black bg-transparent border-0 outline-none w-24 sm:w-32 md:w-48 md:text-8xl text-purple-600 dark:text-purple-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                     placeholder="0"
                                     value={data.packages_flipped}
                                     onChange={(e) => setData('packages_flipped', e.target.value)}
                                     required
-                                    style={{ fontSize: '5rem', lineHeight: '1', minHeight: '6rem' }}
                                 />
                                 {errors.packages_flipped && (
-                                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2">
+                                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
                                         <p className="text-sm text-red-600 bg-white dark:bg-gray-800 px-2 py-1 rounded shadow">
                                             {errors.packages_flipped}
                                         </p>
@@ -231,9 +230,9 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                 variant="outline"
                                 size="lg"
                                 onClick={incrementPackages}
-                                className="h-16 w-16 rounded-full text-2xl font-bold hover:bg-purple-50 dark:hover:bg-purple-950"
+                                className="h-12 w-12 sm:h-16 sm:w-16 rounded-full text-2xl font-bold hover:bg-purple-50 dark:hover:bg-purple-950 shrink-0"
                             >
-                                <Plus className="h-8 w-8" />
+                                <Plus className="h-6 w-6 sm:h-8 sm:w-8" />
                             </Button>
                         </div>
 
@@ -243,7 +242,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                     </div>
 
                     {/* Store Selection - Always Visible */}
-                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border">
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border w-full overflow-hidden">
                         <StoreCombobox
                             value={data.store_id}
                             onChange={(value) => setData('store_id', value)}
