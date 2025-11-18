@@ -1,10 +1,10 @@
 # Shrimp Heroes
 
-A web application for tracking and managing shrimp-related store locations and user interactions.
+A web application empowering activists to take peaceful action against shrimp cruelty at Aldi stores.
 
 ## Introduction
 
-Shrimp Heroes provides a modern full-stack experience for managing store data and user engagement. The application includes authentication, store management, and user statistics tracking.
+Shrimp Heroes helps coordinate and track peaceful protest actions at Aldi stores across Europe. Users can flip shrimp packages upside down to protest cruel farming practices (like eye-cutting and suffocation without stunning), report their actions with photo verification, and see the collective impact of the movement. Every package flipped helps approximately 34 shrimp per year in expectation.
 
 ## Prerequisites
 
@@ -112,7 +112,3 @@ vendor/bin/pint
 ```bash
 npm run build
 ```
-
-## License
-
-[Add your license information here]
