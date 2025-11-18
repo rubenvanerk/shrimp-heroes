@@ -1,4 +1,4 @@
-# Shrimp Heroes
+# 🦐 Shrimp Heroes
 
 A web application empowering activists to take peaceful action against shrimp cruelty at Aldi stores.
 
