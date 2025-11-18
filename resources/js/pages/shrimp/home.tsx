@@ -5,7 +5,10 @@ interface HomeProps {
     userShrimpHelped: number;
 }
 
-export default function Home({ globalShrimpHelped = 1247850, userShrimpHelped = 1250 }: HomeProps) {
+export default function Home({
+    globalShrimpHelped = 1247850,
+    userShrimpHelped = 1250,
+}: HomeProps) {
     return (
         <>
             <Head title="Shrimp Heroes" />
@@ -14,8 +17,12 @@ export default function Home({ globalShrimpHelped = 1247850, userShrimpHelped = 
                 {/* Header */}
                 <div className="bg-white shadow-sm">
                     <div className="mx-auto max-w-7xl px-4 py-6">
-                        <h1 className="text-3xl font-bold text-rose-600">🦐 Shrimp Heroes</h1>
-                        <p className="text-sm text-gray-600">Saving shrimp, one action at a time</p>
+                        <h1 className="text-3xl font-bold text-rose-600">
+                            🦐 Shrimp Heroes
+                        </h1>
+                        <p className="text-sm text-gray-600">
+                            Saving shrimp, one action at a time
+                        </p>
                     </div>
                 </div>
 
@@ -24,19 +31,27 @@ export default function Home({ globalShrimpHelped = 1247850, userShrimpHelped = 
                     {/* Stats Cards */}
                     <div className="mb-8 grid gap-6 md:grid-cols-2">
                         <div className="rounded-lg bg-white p-6 shadow-md">
-                            <p className="text-sm font-bold text-gray-500">GLOBAL IMPACT</p>
+                            <p className="text-sm font-bold text-gray-500">
+                                GLOBAL IMPACT
+                            </p>
                             <p className="text-4xl font-extrabold text-rose-500">
                                 {globalShrimpHelped.toLocaleString()}
                             </p>
-                            <p className="text-sm text-gray-600">Shrimp helped worldwide</p>
+                            <p className="text-sm text-gray-600">
+                                Shrimp helped worldwide
+                            </p>
                         </div>
 
                         <div className="rounded-lg bg-white p-6 shadow-md">
-                            <p className="text-sm font-bold text-gray-500">YOUR IMPACT</p>
+                            <p className="text-sm font-bold text-gray-500">
+                                YOUR IMPACT
+                            </p>
                             <p className="text-4xl font-extrabold text-orange-500">
                                 {userShrimpHelped.toLocaleString()}
                             </p>
-                            <p className="text-sm text-gray-600">Shrimp you've helped</p>
+                            <p className="text-sm text-gray-600">
+                                Shrimp you've helped
+                            </p>
                         </div>
                     </div>
 
@@ -47,7 +62,8 @@ export default function Home({ globalShrimpHelped = 1247850, userShrimpHelped = 
                             Ready to make a difference?
                         </h2>
                         <p className="mt-2 text-gray-600">
-                            Every action counts. Start reporting and help save shrimp today!
+                            Every action counts. Start reporting and help save
+                            shrimp today!
                         </p>
                     </div>
 

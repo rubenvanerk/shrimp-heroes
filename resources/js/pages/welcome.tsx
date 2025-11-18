@@ -57,7 +57,8 @@ export default function Welcome({
                             <p className="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
                                 Track your activism one package flip at a time.
                                 <br />
-                                Every action counts in the fight for better practices.
+                                Every action counts in the fight for better
+                                practices.
                             </p>
                             <ul className="mb-4 flex flex-col lg:mb-6">
                                 <li className="relative flex items-center gap-4 py-2 before:absolute before:top-1/2 before:bottom-0 before:left-[0.4rem] before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A]">
@@ -67,7 +68,8 @@ export default function Welcome({
                                         </span>
                                     </span>
                                     <span>
-                                        Visit your local supermarket and flip shrimp packages label-side up
+                                        Visit your local supermarket and flip
+                                        shrimp packages label-side up
                                     </span>
                                 </li>
                                 <li className="relative flex items-center gap-4 py-2 before:absolute before:top-0 before:bottom-1/2 before:left-[0.4rem] before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A]">
@@ -77,7 +79,8 @@ export default function Welcome({
                                         </span>
                                     </span>
                                     <span>
-                                        Log your action and track your impact across stores
+                                        Log your action and track your impact
+                                        across stores
                                     </span>
                                 </li>
                             </ul>
@@ -101,11 +104,11 @@ export default function Welcome({
                                 </li>
                             </ul>
                         </div>
-                        <div className="relative -mb-px aspect-[335/376] w-full shrink-0 overflow-hidden rounded-t-lg bg-[#e0f2fe] lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg dark:bg-[#0c4a6e] flex items-center justify-center">
+                        <div className="relative -mb-px flex aspect-[335/376] w-full shrink-0 items-center justify-center overflow-hidden rounded-t-lg bg-[#e0f2fe] lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg dark:bg-[#0c4a6e]">
                             <img
                                 src="/images/shrimp.png"
                                 alt="Shrimp Heroes"
-                                className="w-full h-full object-cover translate-y-0 opacity-100 transition-all duration-750 starting:translate-y-6 starting:opacity-0"
+                                className="h-full w-full translate-y-0 object-cover opacity-100 transition-all duration-750 starting:translate-y-6 starting:opacity-0"
                             />
                         </div>
                     </main>

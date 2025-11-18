@@ -25,14 +25,19 @@ export default function Report() {
                         <Link href="/shrimp" className="text-2xl">
                             ←
                         </Link>
-                        <h1 className="text-2xl font-bold text-rose-600">Report Action</h1>
+                        <h1 className="text-2xl font-bold text-rose-600">
+                            Report Action
+                        </h1>
                         <div className="w-8"></div>
                     </div>
                 </div>
 
                 {/* Form */}
                 <div className="mx-auto max-w-2xl px-4 py-8">
-                    <form onSubmit={submit} className="space-y-6 rounded-lg bg-white p-6 shadow-md">
+                    <form
+                        onSubmit={submit}
+                        className="space-y-6 rounded-lg bg-white p-6 shadow-md"
+                    >
                         {/* Action Type */}
                         <div>
                             <label className="block text-sm font-bold text-gray-700">
@@ -40,18 +45,28 @@ export default function Report() {
                             </label>
                             <select
                                 value={data.action_type}
-                                onChange={(e) => setData('action_type', e.target.value)}
+                                onChange={(e) =>
+                                    setData('action_type', e.target.value)
+                                }
                                 className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2"
                                 required
                             >
                                 <option value="">Select an action</option>
-                                <option value="rescue">🚑 Rescue Operation</option>
-                                <option value="habitat">🏡 Habitat Protection</option>
-                                <option value="cleanup">🧹 Beach Cleanup</option>
+                                <option value="rescue">
+                                    🚑 Rescue Operation
+                                </option>
+                                <option value="habitat">
+                                    🏡 Habitat Protection
+                                </option>
+                                <option value="cleanup">
+                                    🧹 Beach Cleanup
+                                </option>
                                 <option value="education">📚 Education</option>
                             </select>
                             {errors.action_type && (
-                                <p className="mt-1 text-sm text-red-600">{errors.action_type}</p>
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.action_type}
+                                </p>
                             )}
                         </div>
 
@@ -63,14 +78,18 @@ export default function Report() {
                             <input
                                 type="number"
                                 value={data.shrimp_helped}
-                                onChange={(e) => setData('shrimp_helped', e.target.value)}
+                                onChange={(e) =>
+                                    setData('shrimp_helped', e.target.value)
+                                }
                                 className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2"
                                 placeholder="100"
                                 min="1"
                                 required
                             />
                             {errors.shrimp_helped && (
-                                <p className="mt-1 text-sm text-red-600">{errors.shrimp_helped}</p>
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.shrimp_helped}
+                                </p>
                             )}
                         </div>
 
@@ -82,12 +101,16 @@ export default function Report() {
                             <input
                                 type="text"
                                 value={data.location}
-                                onChange={(e) => setData('location', e.target.value)}
+                                onChange={(e) =>
+                                    setData('location', e.target.value)
+                                }
                                 className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2"
                                 placeholder="Beach, City, Country"
                             />
                             {errors.location && (
-                                <p className="mt-1 text-sm text-red-600">{errors.location}</p>
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.location}
+                                </p>
                             )}
                         </div>
 
@@ -98,13 +121,17 @@ export default function Report() {
                             </label>
                             <textarea
                                 value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(e) =>
+                                    setData('description', e.target.value)
+                                }
                                 className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-2"
                                 rows={4}
                                 placeholder="Tell us about your shrimp-saving action..."
                             />
                             {errors.description && (
-                                <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.description}
+                                </p>
                             )}
                         </div>
 

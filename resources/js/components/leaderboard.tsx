@@ -37,17 +37,24 @@ export function Leaderboard({
             .slice(0, 2);
     };
 
-    const renderUserRow = (user: LeaderboardUser, rank: number, isCurrentUserRow = false) => (
+    const renderUserRow = (
+        user: LeaderboardUser,
+        rank: number,
+        isCurrentUserRow = false,
+    ) => (
         <div
             key={user.id}
             className={cn(
                 'flex items-center gap-4 rounded-lg border p-4 transition-colors',
                 isCurrentUserRow &&
                     'border-primary bg-primary/5 ring-2 ring-primary/20 dark:bg-primary/10',
-                !isCurrentUserRow && 'border-transparent hover:bg-muted/50'
+                !isCurrentUserRow && 'border-transparent hover:bg-muted/50',
             )}
         >
-            <Badge variant={getRankBadgeVariant(rank)} className="min-w-8 justify-center">
+            <Badge
+                variant={getRankBadgeVariant(rank)}
+                className="min-w-8 justify-center"
+            >
                 #{rank}
             </Badge>
 
@@ -82,7 +89,9 @@ export function Leaderboard({
                 <div className="font-semibold tabular-nums">
                     {user.total_shrimp_helped.toLocaleString()}
                 </div>
-                <div className="text-xs text-muted-foreground">shrimp helped</div>
+                <div className="text-xs text-muted-foreground">
+                    shrimp helped
+                </div>
             </div>
         </div>
     );
@@ -93,7 +102,9 @@ export function Leaderboard({
                 <CardTitle>Leaderboard</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
-                {leaderboard.map((user, index) => renderUserRow(user, index + 1, isCurrentUser(user.id)))}
+                {leaderboard.map((user, index) =>
+                    renderUserRow(user, index + 1, isCurrentUser(user.id)),
+                )}
 
                 {!currentUserInTop10 && (
                     <>
@@ -107,7 +118,11 @@ export function Leaderboard({
                                 </span>
                             </div>
                         </div>
-                        {renderUserRow(currentUserStats, currentUserStats.rank ?? 11, true)}
+                        {renderUserRow(
+                            currentUserStats,
+                            currentUserStats.rank ?? 11,
+                            true,
+                        )}
                     </>
                 )}
             </CardContent>

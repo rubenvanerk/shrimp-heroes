@@ -5,22 +5,26 @@ export default function Guide() {
         {
             icon: '🚑',
             title: 'Rescue Operations',
-            description: 'Learn how to safely rescue stranded shrimp and return them to water.',
+            description:
+                'Learn how to safely rescue stranded shrimp and return them to water.',
         },
         {
             icon: '🏡',
             title: 'Habitat Protection',
-            description: 'Discover ways to protect and restore shrimp habitats in your area.',
+            description:
+                'Discover ways to protect and restore shrimp habitats in your area.',
         },
         {
             icon: '🧹',
             title: 'Beach Cleanup',
-            description: 'Organize or join beach cleanups to keep shrimp environments clean.',
+            description:
+                'Organize or join beach cleanups to keep shrimp environments clean.',
         },
         {
             icon: '📚',
             title: 'Education',
-            description: 'Share knowledge about shrimp conservation with your community.',
+            description:
+                'Share knowledge about shrimp conservation with your community.',
         },
     ];
 
@@ -35,7 +39,9 @@ export default function Guide() {
                         <Link href="/shrimp" className="text-2xl">
                             ←
                         </Link>
-                        <h1 className="text-2xl font-bold text-rose-600">📖 Guide</h1>
+                        <h1 className="text-2xl font-bold text-rose-600">
+                            📖 Guide
+                        </h1>
                         <div className="w-8"></div>
                     </div>
                 </div>
@@ -48,23 +54,29 @@ export default function Guide() {
                             Welcome, Shrimp Hero! 🦐
                         </h2>
                         <p className="text-gray-600">
-                            This guide will help you understand different ways you can help save
-                            shrimp and contribute to marine conservation. Every action matters,
-                            no matter how small!
+                            This guide will help you understand different ways
+                            you can help save shrimp and contribute to marine
+                            conservation. Every action matters, no matter how
+                            small!
                         </p>
                     </div>
 
                     {/* Guide Cards */}
                     <div className="space-y-6">
                         {guides.map((guide, index) => (
-                            <div key={index} className="rounded-lg bg-white p-6 shadow-md">
+                            <div
+                                key={index}
+                                className="rounded-lg bg-white p-6 shadow-md"
+                            >
                                 <div className="mb-4 flex items-center gap-4">
                                     <div className="text-5xl">{guide.icon}</div>
                                     <h3 className="text-xl font-bold text-gray-800">
                                         {guide.title}
                                     </h3>
                                 </div>
-                                <p className="text-gray-600">{guide.description}</p>
+                                <p className="text-gray-600">
+                                    {guide.description}
+                                </p>
                             </div>
                         ))}
                     </div>

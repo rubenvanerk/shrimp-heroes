@@ -75,7 +75,7 @@ export default function Dashboard({
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums text-purple-700 dark:text-purple-400">
+                            <div className="text-3xl font-bold text-purple-700 tabular-nums dark:text-purple-400">
                                 {globalStats.totalPackagesFlipped.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
@@ -91,7 +91,7 @@ export default function Dashboard({
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums text-blue-700 dark:text-blue-400">
+                            <div className="text-3xl font-bold text-blue-700 tabular-nums dark:text-blue-400">
                                 {globalStats.totalShrimpHelped.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
@@ -107,7 +107,7 @@ export default function Dashboard({
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums text-orange-700 dark:text-orange-400">
+                            <div className="text-3xl font-bold text-orange-700 tabular-nums dark:text-orange-400">
                                 {globalStats.totalActions.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">

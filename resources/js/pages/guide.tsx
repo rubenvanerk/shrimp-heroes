@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { BookOpen, Camera, CircleHelp, Eye, Hand, Heart, Store } from 'lucide-react';
+import { BookOpen, Camera, CircleHelp, Hand, Heart, Store } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,28 +23,32 @@ const steps = [
     {
         number: 2,
         title: 'Flip as many products as you can',
-        description: 'Carefully turn the packages upside down on the shelf. This makes them less appealing to shoppers and requires staff to fix them.',
+        description:
+            'Carefully turn the packages upside down on the shelf. This makes them less appealing to shoppers and requires staff to fix them.',
         icon: Hand,
         color: 'bg-pink-100 dark:bg-pink-900/20',
     },
     {
         number: 3,
         title: 'Take a Quick Photo',
-        description: "Snap a photo of your work if you'd like to share proof of your action!",
+        description:
+            "Snap a photo of your work if you'd like to share proof of your action!",
         icon: Camera,
         color: 'bg-blue-100 dark:bg-blue-900/20',
     },
     {
         number: 4,
         title: 'Report Your Action',
-        description: 'Tell the world of your deeds! Tell us how many packages you flipped, select your Aldi store from the list, and upload a photo for verification. Every package = 34 shrimp helped!',
+        description:
+            'Tell the world of your deeds! Tell us how many packages you flipped, select your Aldi store from the list, and upload a photo for verification. Every package = 34 shrimp helped!',
         icon: BookOpen,
         color: 'bg-orange-100 dark:bg-orange-900/20',
     },
     {
         number: 5,
         title: 'Feel Amazing!',
-        description: "You've just taken a stand for shrimp welfare. You're making a real difference!",
+        description:
+            "You've just taken a stand for shrimp welfare. You're making a real difference!",
         icon: Heart,
         color: 'bg-rose-100 dark:bg-rose-900/20',
     },
@@ -53,11 +57,11 @@ const steps = [
 const faqs = [
     {
         question: 'Is this legal?',
-        answer: 'Yes! Simply turning products around is completely legal. You\'re not damaging anything or stealing - just rearranging the display.',
+        answer: "Yes! Simply turning products around is completely legal. You're not damaging anything or stealing - just rearranging the display.",
     },
     {
         question: 'What if store staff approach me?',
-        answer: 'Be polite and honest. You can say you\'re concerned about shrimp welfare. Most staff will simply ask you to stop or leave, which is their right.',
+        answer: "Be polite and honest. You can say you're concerned about shrimp welfare. Most staff will simply ask you to stop or leave, which is their right.",
     },
     {
         question: 'How does flipping products help shrimp?',
@@ -73,7 +77,7 @@ const faqs = [
     },
     {
         question: 'How did you calculate that each package helps 34 shrimp?',
-        answer: 'Great question! Here\'s the math: Convincing Aldi to introduce electrical stunning would help an estimated 340 million shrimp per year. We estimate we need to flip 1 million products to win the campaign. While store protest actions like ours are powerful, they\'re part of a larger movement—we estimate they account for about 10% of the campaign\'s success. This means each product flipped helps approximately 34 shrimp per year in expectation. Every flip counts!',
+        answer: "Great question! Here's the math: Convincing Aldi to introduce electrical stunning would help an estimated 340 million shrimp per year. We estimate we need to flip 1 million products to win the campaign. While store protest actions like ours are powerful, they're part of a larger movement—we estimate they account for about 10% of the campaign's success. This means each product flipped helps approximately 34 shrimp per year in expectation. Every flip counts!",
     },
 ];
 
@@ -84,8 +88,12 @@ export default function Guide() {
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4 pb-24 md:pb-4">
                 <div className="mx-auto w-full max-w-4xl space-y-6">
                     <div className="text-center">
-                        <h1 className="mb-2 text-3xl font-bold">How It Works</h1>
-                        <p className="text-lg text-muted-foreground">Simple actions, big impact!</p>
+                        <h1 className="mb-2 text-3xl font-bold">
+                            How It Works
+                        </h1>
+                        <p className="text-lg text-muted-foreground">
+                            Simple actions, big impact!
+                        </p>
                     </div>
 
                     <Card className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-orange-900/10">
@@ -94,13 +102,16 @@ export default function Guide() {
                         </CardHeader>
                         <CardContent className="space-y-3">
                             <p className="leading-relaxed">
-                                When products are displayed upside down, customers are less likely to purchase them.
-                                This sends a message to Aldi that shoppers are concerned about their shrimp sourcing
-                                practices.
+                                When products are displayed upside down,
+                                customers are less likely to purchase them. This
+                                sends a message to Aldi that shoppers are
+                                concerned about their shrimp sourcing practices.
                             </p>
                             <p className="leading-relaxed">
-                                Plus, it requires store staff to spend time fixing displays, making them aware of the
-                                issue. It's a peaceful, legal way to protest shrimp cruelty!
+                                Plus, it requires store staff to spend time
+                                fixing displays, making them aware of the issue.
+                                It's a peaceful, legal way to protest shrimp
+                                cruelty!
                             </p>
                         </CardContent>
                     </Card>
@@ -117,9 +128,13 @@ export default function Guide() {
                                             <span className="flex size-8 items-center justify-center rounded-full bg-white/70 font-bold dark:bg-black/30">
                                                 {step.number}
                                             </span>
-                                            <h3 className="flex-1 text-xl font-bold">{step.title}</h3>
+                                            <h3 className="flex-1 text-xl font-bold">
+                                                {step.title}
+                                            </h3>
                                         </div>
-                                        <p className="leading-relaxed text-muted-foreground">{step.description}</p>
+                                        <p className="leading-relaxed text-muted-foreground">
+                                            {step.description}
+                                        </p>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -128,16 +143,24 @@ export default function Guide() {
 
                     <div className="text-center">
                         <CircleHelp className="mx-auto mb-3 size-12 text-muted-foreground" />
-                        <h2 className="mb-2 text-2xl font-bold">Frequently Asked Questions</h2>
-                        <p className="text-muted-foreground">Everything you need to know</p>
+                        <h2 className="mb-2 text-2xl font-bold">
+                            Frequently Asked Questions
+                        </h2>
+                        <p className="text-muted-foreground">
+                            Everything you need to know
+                        </p>
                     </div>
 
                     <div className="space-y-3">
                         {faqs.map((faq, index) => (
                             <Card key={index}>
                                 <CardContent className="p-5">
-                                    <h3 className="mb-2 text-lg font-bold">{faq.question}</h3>
-                                    <p className="leading-relaxed text-muted-foreground">{faq.answer}</p>
+                                    <h3 className="mb-2 text-lg font-bold">
+                                        {faq.question}
+                                    </h3>
+                                    <p className="leading-relaxed text-muted-foreground">
+                                        {faq.answer}
+                                    </p>
                                 </CardContent>
                             </Card>
                         ))}

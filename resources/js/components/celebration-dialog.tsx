@@ -6,10 +6,10 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { index } from '@/routes/actions';
 import { router } from '@inertiajs/react';
 import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
-import { index } from '@/routes/actions';
 
 interface CelebrationDialogProps {
     open: boolean;
@@ -17,13 +17,22 @@ interface CelebrationDialogProps {
     onClose?: () => void;
 }
 
-export function CelebrationDialog({ open, shrimpHelped, onClose }: CelebrationDialogProps) {
+export function CelebrationDialog({
+    open,
+    shrimpHelped,
+    onClose,
+}: CelebrationDialogProps) {
     useEffect(() => {
         if (open) {
             // Trigger confetti animation
             const duration = 3000;
             const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            const defaults = {
+                startVelocity: 30,
+                spread: 360,
+                ticks: 60,
+                zIndex: 0,
+            };
 
             function randomInRange(min: number, max: number) {
                 return Math.random() * (max - min) + min;
@@ -41,12 +50,18 @@ export function CelebrationDialog({ open, shrimpHelped, onClose }: CelebrationDi
                 confetti({
                     ...defaults,
                     particleCount,
-                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                    origin: {
+                        x: randomInRange(0.1, 0.3),
+                        y: Math.random() - 0.2,
+                    },
                 });
                 confetti({
                     ...defaults,
                     particleCount,
-                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                    origin: {
+                        x: randomInRange(0.7, 0.9),
+                        y: Math.random() - 0.2,
+                    },
                 });
             }, 250);
 
@@ -80,7 +95,8 @@ export function CelebrationDialog({ open, shrimpHelped, onClose }: CelebrationDi
                             SHRIMP! 🦐🎉
                         </div>
                         <p className="pt-4 text-base text-muted-foreground">
-                            Thank you for taking action to help end shrimp cruelty!
+                            Thank you for taking action to help end shrimp
+                            cruelty!
                         </p>
                     </DialogDescription>
                 </DialogHeader>

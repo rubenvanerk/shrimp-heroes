@@ -198,7 +198,7 @@ export function StoreCombobox({
                                                         'flex w-full items-start gap-2 rounded-sm px-2 py-2 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground',
                                                         value ===
                                                             store.id.toString() &&
-                                                            'bg-accent'
+                                                            'bg-accent',
                                                     )}
                                                 >
                                                     <Check
@@ -207,7 +207,7 @@ export function StoreCombobox({
                                                             value ===
                                                                 store.id.toString()
                                                                 ? 'opacity-100'
-                                                                : 'opacity-0'
+                                                                : 'opacity-0',
                                                         )}
                                                     />
                                                     <div className="flex-1">

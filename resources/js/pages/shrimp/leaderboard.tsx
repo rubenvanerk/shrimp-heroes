@@ -13,13 +13,41 @@ interface LeaderboardProps {
 
 export default function Leaderboard({ users = [] }: LeaderboardProps) {
     // Mock data if none provided
-    const leaderboardData = users.length > 0 ? users : [
-        { id: '1', name: 'Shrimp Warrior', totalShrimpHelped: 5420, country: 'Japan' },
-        { id: '2', name: 'Ocean Guardian', totalShrimpHelped: 4890, country: 'USA' },
-        { id: '3', name: 'Reef Protector', totalShrimpHelped: 3750, country: 'Australia' },
-        { id: '4', name: 'Marine Hero', totalShrimpHelped: 2650, country: 'UK' },
-        { id: '5', name: 'Shrimp Saver', totalShrimpHelped: 1820, country: 'Canada' },
-    ];
+    const leaderboardData =
+        users.length > 0
+            ? users
+            : [
+                  {
+                      id: '1',
+                      name: 'Shrimp Warrior',
+                      totalShrimpHelped: 5420,
+                      country: 'Japan',
+                  },
+                  {
+                      id: '2',
+                      name: 'Ocean Guardian',
+                      totalShrimpHelped: 4890,
+                      country: 'USA',
+                  },
+                  {
+                      id: '3',
+                      name: 'Reef Protector',
+                      totalShrimpHelped: 3750,
+                      country: 'Australia',
+                  },
+                  {
+                      id: '4',
+                      name: 'Marine Hero',
+                      totalShrimpHelped: 2650,
+                      country: 'UK',
+                  },
+                  {
+                      id: '5',
+                      name: 'Shrimp Saver',
+                      totalShrimpHelped: 1820,
+                      country: 'Canada',
+                  },
+              ];
 
     return (
         <>
@@ -32,7 +60,9 @@ export default function Leaderboard({ users = [] }: LeaderboardProps) {
                         <Link href="/shrimp" className="text-2xl">
                             ←
                         </Link>
-                        <h1 className="text-2xl font-bold text-rose-600">🏆 Leaderboard</h1>
+                        <h1 className="text-2xl font-bold text-rose-600">
+                            🏆 Leaderboard
+                        </h1>
                         <div className="w-8"></div>
                     </div>
                 </div>
@@ -63,8 +93,12 @@ export default function Leaderboard({ users = [] }: LeaderboardProps) {
 
                                     {/* User Info */}
                                     <div>
-                                        <p className="font-bold text-gray-800">{user.name}</p>
-                                        <p className="text-sm text-gray-500">{user.country}</p>
+                                        <p className="font-bold text-gray-800">
+                                            {user.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500">
+                                            {user.country}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -73,7 +107,9 @@ export default function Leaderboard({ users = [] }: LeaderboardProps) {
                                     <p className="text-2xl font-bold text-rose-500">
                                         {user.totalShrimpHelped.toLocaleString()}
                                     </p>
-                                    <p className="text-xs text-gray-500">shrimp saved</p>
+                                    <p className="text-xs text-gray-500">
+                                        shrimp saved
+                                    </p>
                                 </div>
                             </div>
                         ))}

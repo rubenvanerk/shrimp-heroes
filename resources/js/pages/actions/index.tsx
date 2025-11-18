@@ -88,7 +88,10 @@ interface ActionsIndexProps {
     };
 }
 
-export default function ActionsIndex({ actions, userStats }: ActionsIndexProps) {
+export default function ActionsIndex({
+    actions,
+    userStats,
+}: ActionsIndexProps) {
     const hasPendingVerifications = actions.data.some(
         (action) => action.verification_status === 'pending',
     );
@@ -129,7 +132,7 @@ export default function ActionsIndex({ actions, userStats }: ActionsIndexProps) 
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums text-purple-700 dark:text-purple-400">
+                            <div className="text-3xl font-bold text-purple-700 tabular-nums dark:text-purple-400">
                                 {userStats.totalPackagesFlipped.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
@@ -145,7 +148,7 @@ export default function ActionsIndex({ actions, userStats }: ActionsIndexProps) 
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums text-blue-700 dark:text-blue-400">
+                            <div className="text-3xl font-bold text-blue-700 tabular-nums dark:text-blue-400">
                                 {userStats.totalShrimpHelped.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
@@ -161,7 +164,7 @@ export default function ActionsIndex({ actions, userStats }: ActionsIndexProps) 
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold tabular-nums text-orange-700 dark:text-orange-400">
+                            <div className="text-3xl font-bold text-orange-700 tabular-nums dark:text-orange-400">
                                 {userStats.totalActions.toLocaleString()}
                             </div>
                             <p className="mt-1 text-xs text-muted-foreground">
@@ -174,7 +177,7 @@ export default function ActionsIndex({ actions, userStats }: ActionsIndexProps) 
                 {actions.data.length === 0 ? (
                     <Card>
                         <CardContent className="flex flex-col items-center justify-center py-12">
-                            <div className="flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-orange-100 to-pink-100 dark:from-orange-950/40 dark:to-pink-950/40 border border-orange-200 dark:border-orange-900/50 shadow-lg">
+                            <div className="flex h-24 w-24 items-center justify-center rounded-full border border-orange-200 bg-gradient-to-br from-orange-100 to-pink-100 shadow-lg dark:border-orange-900/50 dark:from-orange-950/40 dark:to-pink-950/40">
                                 <span className="text-6xl drop-shadow">🦐</span>
                             </div>
                             <h3 className="mt-4 text-lg font-semibold">

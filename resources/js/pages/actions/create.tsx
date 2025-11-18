@@ -8,12 +8,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { create } from '@/routes/actions';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { create } from '@/routes/actions';
+import { Upload, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { X, Upload } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,17 +26,32 @@ interface CreateActionProps {
     userLocation?: { latitude: number; longitude: number } | null;
 }
 
-export default function CreateAction({ userLocation: initialUserLocation }: CreateActionProps) {
+export default function CreateAction({
+    userLocation: initialUserLocation,
+}: CreateActionProps) {
     const [isLoadingLocation, setIsLoadingLocation] = useState(false);
     const [locationError, setLocationError] = useState<string | null>(null);
-    const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(initialUserLocation || null);
+    const [userLocation, setUserLocation] = useState<{
+        latitude: number;
+        longitude: number;
+    } | null>(initialUserLocation || null);
     const [photos, setPhotos] = useState<File[]>([]);
     const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
     const [photoError, setPhotoError] = useState<string | null>(null);
 
-    const { flash } = usePage<{ flash: { success?: { message: string; shrimp_helped: number } } }>().props;
+    const { flash } = usePage<{
+        flash: { success?: { message: string; shrimp_helped: number } };
+    }>().props;
 
-    const { data, setData, post, processing, errors, recentlySuccessful, reset } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        recentlySuccessful,
+        reset,
+    } = useForm({
         store_id: '',
         packages_flipped: '',
         notes: '',
@@ -44,10 +59,18 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
     });
 
     // Check if we should show celebration from flash message
-    const showCelebration = !!(flash?.success && typeof flash.success === 'object' && 'shrimp_helped' in flash.success);
-    const shrimpHelped = showCelebration && flash.success && typeof flash.success === 'object' && 'shrimp_helped' in flash.success
-        ? flash.success.shrimp_helped
-        : 0;
+    const showCelebration = !!(
+        flash?.success &&
+        typeof flash.success === 'object' &&
+        'shrimp_helped' in flash.success
+    );
+    const shrimpHelped =
+        showCelebration &&
+        flash.success &&
+        typeof flash.success === 'object' &&
+        'shrimp_helped' in flash.success
+            ? flash.success.shrimp_helped
+            : 0;
 
     // Request user location on mount if not already provided
     useEffect(() => {
@@ -62,8 +85,10 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                 (error) => {
                     setIsLoadingLocation(false);
                     console.error('Location error:', error);
-                    setLocationError('Unable to get your location. Showing all stores.');
-                }
+                    setLocationError(
+                        'Unable to get your location. Showing all stores.',
+                    );
+                },
             );
         }
     }, []); // Empty dependency array - only run once on mount
@@ -171,140 +196,149 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                        <>
-                            {/* Store Selection */}
-                            <StoreCombobox
-                                value={data.store_id}
-                                onChange={(value) => setData('store_id', value)}
-                                userLocation={userLocation}
-                                error={errors.store_id}
+                    <>
+                        {/* Store Selection */}
+                        <StoreCombobox
+                            value={data.store_id}
+                            onChange={(value) => setData('store_id', value)}
+                            userLocation={userLocation}
+                            error={errors.store_id}
+                        />
+                        {/* Packages Flipped */}
+                        <div className="grid gap-2">
+                            <Label htmlFor="packages_flipped">
+                                Packages flipped *
+                            </Label>
+
+                            <Input
+                                id="packages_flipped"
+                                name="packages_flipped"
+                                type="number"
+                                min="1"
+                                className="mt-1 block w-full"
+                                placeholder="e.g. 50"
+                                value={data.packages_flipped}
+                                onChange={(e) =>
+                                    setData('packages_flipped', e.target.value)
+                                }
+                                required
                             />
 
-                            {/* Packages Flipped */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="packages_flipped">
-                                    Packages flipped *
-                                </Label>
+                            <InputError message={errors.packages_flipped} />
+                        </div>
+                        {/* Photo Upload */}
+                        <div className="grid gap-2">
+                            <Label htmlFor="photos">Photos (optional)</Label>
+                            <p className="text-sm text-muted-foreground">
+                                Upload photos of the flipped packages (max 5
+                                photos, 5MB each)
+                            </p>
 
-                                <Input
-                                    id="packages_flipped"
-                                    name="packages_flipped"
-                                    type="number"
-                                    min="1"
-                                    className="mt-1 block w-full"
-                                    placeholder="e.g. 50"
-                                    value={data.packages_flipped}
-                                    onChange={(e) => setData('packages_flipped', e.target.value)}
-                                    required
-                                />
-
-                                <InputError message={errors.packages_flipped} />
-                            </div>
-
-                            {/* Photo Upload */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="photos">
-                                    Photos (optional)
-                                </Label>
-                                <p className="text-sm text-muted-foreground">
-                                    Upload photos of the flipped packages (max 5 photos, 5MB each)
-                                </p>
-
-                                {/* Photo Preview Grid */}
-                                {photoPreviews.length > 0 && (
-                                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                                        {photoPreviews.map((preview, index) => (
-                                            <div
-                                                key={index}
-                                                className="group relative aspect-square overflow-hidden rounded-lg border bg-muted"
-                                            >
-                                                <img
-                                                    src={preview}
-                                                    alt={`Preview ${index + 1}`}
-                                                    className="h-full w-full object-cover"
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removePhoto(index)}
-                                                    className="absolute right-2 top-2 rounded-full bg-destructive p-1.5 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100"
-                                                >
-                                                    <X className="h-4 w-4" />
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-
-                                {/* Upload Button */}
-                                {photos.length < 5 && (
-                                    <div className="flex items-center gap-2">
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            onClick={() => document.getElementById('photo-upload')?.click()}
-                                            className="w-full"
+                            {/* Photo Preview Grid */}
+                            {photoPreviews.length > 0 && (
+                                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                                    {photoPreviews.map((preview, index) => (
+                                        <div
+                                            key={index}
+                                            className="group relative aspect-square overflow-hidden rounded-lg border bg-muted"
                                         >
-                                            <Upload className="mr-2 h-4 w-4" />
-                                            {photos.length === 0 ? 'Upload Photos' : `Add More (${photos.length}/5)`}
-                                        </Button>
-                                        <input
-                                            id="photo-upload"
-                                            type="file"
-                                            accept="image/*"
-                                            multiple
-                                            onChange={handlePhotoUpload}
-                                            className="hidden"
-                                        />
-                                    </div>
-                                )}
+                                            <img
+                                                src={preview}
+                                                alt={`Preview ${index + 1}`}
+                                                className="h-full w-full object-cover"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    removePhoto(index)
+                                                }
+                                                className="absolute top-2 right-2 rounded-full bg-destructive p-1.5 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
 
-                                {photoError && (
-                                    <p className="text-sm text-destructive">{photoError}</p>
-                                )}
-                                <InputError message={errors.photos} />
-                            </div>
+                            {/* Upload Button */}
+                            {photos.length < 5 && (
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() =>
+                                            document
+                                                .getElementById('photo-upload')
+                                                ?.click()
+                                        }
+                                        className="w-full"
+                                    >
+                                        <Upload className="mr-2 h-4 w-4" />
+                                        {photos.length === 0
+                                            ? 'Upload Photos'
+                                            : `Add More (${photos.length}/5)`}
+                                    </Button>
+                                    <input
+                                        id="photo-upload"
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handlePhotoUpload}
+                                        className="hidden"
+                                    />
+                                </div>
+                            )}
 
-                            {/* Notes */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="notes">
-                                    Notes (optional)
-                                </Label>
+                            {photoError && (
+                                <p className="text-sm text-destructive">
+                                    {photoError}
+                                </p>
+                            )}
+                            <InputError message={errors.photos} />
+                        </div>
+                        {/* Notes */}
+                        <div className="grid gap-2">
+                            <Label htmlFor="notes">Notes (optional)</Label>
 
-                                <Textarea
-                                    id="notes"
-                                    name="notes"
-                                    className="mt-1 block w-full"
-                                    placeholder="Add any additional details about this action..."
-                                    rows={4}
-                                    value={data.notes}
-                                    onChange={(e) => setData('notes', e.target.value)}
-                />
+                            <Textarea
+                                id="notes"
+                                name="notes"
+                                className="mt-1 block w-full"
+                                placeholder="Add any additional details about this action..."
+                                rows={4}
+                                value={data.notes}
+                                onChange={(e) =>
+                                    setData('notes', e.target.value)
+                                }
+                            />
 
-                                <InputError message={errors.notes} />
-                            </div>                            {/* Submit Button */}
-                            <div className="flex items-center gap-4">
-                                <Button type="submit" disabled={processing}>
-                                    {processing ? 'Submitting...' : 'Report Action'}
-                                </Button>
+                            <InputError message={errors.notes} />
+                        </div>{' '}
+                        {/* Submit Button */}
+                        <div className="flex items-center gap-4">
+                            <Button type="submit" disabled={processing}>
+                                {processing ? 'Submitting...' : 'Report Action'}
+                            </Button>
 
-                                <Transition
-                                    show={recentlySuccessful}
-                                    enter="transition ease-in-out"
-                                    enterFrom="opacity-0"
-                                    leave="transition ease-in-out"
-                                    leaveTo="opacity-0"
-                                >
-                                    <p className="text-sm text-muted-foreground">
-                                        Reported successfully!
-                                    </p>
-                                </Transition>
-                            </div>
-                        </>
+                            <Transition
+                                show={recentlySuccessful}
+                                enter="transition ease-in-out"
+                                enterFrom="opacity-0"
+                                leave="transition ease-in-out"
+                                leaveTo="opacity-0"
+                            >
+                                <p className="text-sm text-muted-foreground">
+                                    Reported successfully!
+                                </p>
+                            </Transition>
+                        </div>
+                    </>
                 </form>
             </div>
 
-            <CelebrationDialog 
-                open={showCelebration} 
+            <CelebrationDialog
+                open={showCelebration}
                 shrimpHelped={shrimpHelped}
             />
         </AppLayout>
