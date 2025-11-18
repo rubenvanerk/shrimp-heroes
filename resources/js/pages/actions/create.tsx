@@ -209,7 +209,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                     name="packages_flipped"
                                     type="number"
                                     min="1"
-                                    className="text-center text-6xl md:text-8xl font-black bg-transparent border-0 outline-none w-32 md:w-48 text-purple-600 dark:text-purple-400"
+                                    className="text-center text-6xl md:text-8xl font-black bg-transparent border-0 outline-none w-32 md:w-48 text-purple-600 dark:text-purple-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                     placeholder="0"
                                     value={data.packages_flipped}
                                     onChange={(e) => setData('packages_flipped', e.target.value)}
