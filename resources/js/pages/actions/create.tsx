@@ -1,4 +1,5 @@
 import ActionController from '@/actions/App/Http/Controllers/ActionController';
+import { CelebrationDialog } from '@/components/celebration-dialog';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { StoreCombobox } from '@/components/store-combobox';
@@ -9,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { create } from '@/routes/actions';
 import { useEffect, useState } from 'react';
 import { X, Upload } from 'lucide-react';
@@ -33,12 +34,20 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
     const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
     const [photoError, setPhotoError] = useState<string | null>(null);
 
+    const { flash } = usePage<{ flash: { success?: { message: string; shrimp_helped: number } } }>().props;
+
     const { data, setData, post, processing, errors, recentlySuccessful, reset } = useForm({
         store_id: '',
         packages_flipped: '',
         notes: '',
         photos: [] as File[],
     });
+
+    // Check if we should show celebration from flash message
+    const showCelebration = !!(flash?.success && typeof flash.success === 'object' && 'shrimp_helped' in flash.success);
+    const shrimpHelped = showCelebration && flash.success && typeof flash.success === 'object' && 'shrimp_helped' in flash.success
+        ? flash.success.shrimp_helped
+        : 0;
 
     // Request user location on mount if not already provided
     useEffect(() => {
@@ -293,6 +302,11 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                         </>
                 </form>
             </div>
+
+            <CelebrationDialog 
+                open={showCelebration} 
+                shrimpHelped={shrimpHelped}
+            />
         </AppLayout>
     );
 }

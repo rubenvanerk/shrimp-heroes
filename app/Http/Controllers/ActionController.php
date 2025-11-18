@@ -81,6 +81,11 @@ class ActionController extends Controller
 
         VerifyActionJob::dispatch($action);
 
-        return to_route('actions.index')->with('success', 'Action reported successfully!');
+        $shrimpHelped = $action->packages_flipped * config('shrimp-heroes.shrimp_per_package');
+
+        return to_route('actions.index')->with('success', [
+            'message' => 'Action reported successfully!',
+            'shrimp_helped' => $shrimpHelped,
+        ]);
     }
 }
