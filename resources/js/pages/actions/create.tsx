@@ -362,7 +362,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                 <Textarea
                                     id="notes"
                                     name="notes"
-                                    className="border-0 bg-transparent resize-none focus:ring-0 focus:border-0 p-0 text-base"
+                                    className="border-0 bg-transparent resize-none focus:ring-0 focus:border-0 px-4 py-3 text-base"
                                     placeholder="Add any additional details about this action..."
                                     rows={4}
                                     value={data.notes}
