@@ -64,7 +64,10 @@ The application will be available at the URL shown in your terminal (typically `
 
 ### Import ALDI Store Data
 
-If you have a CSV file containing ALDI store locations, you can import them:
+The official ALDI store location data is available as a CSV file:
+- **[Download ALDI Store Data (CSV)](https://drive.google.com/file/d/1__EGNUFO7H4M5mjBeBYa9NPhphYBIrhw/view?usp=drive_link)**
+
+After downloading the CSV file, place it in `resources/data/stores.csv` and import it:
 
 ```bash
 php artisan stores:import resources/data/stores.csv
