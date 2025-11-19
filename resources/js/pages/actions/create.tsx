@@ -12,7 +12,6 @@ import { Transition } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
 import { create } from '@/routes/actions';
 import { useEffect, useState } from 'react';
-import { X, Upload, Plus, Minus, Camera, FileText } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -199,7 +198,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                 className="h-12 w-12 sm:h-16 sm:w-16 rounded-full text-2xl font-bold hover:bg-purple-50 dark:hover:bg-purple-950 shrink-0"
                                 disabled={!data.packages_flipped || parseInt(data.packages_flipped) <= 1}
                             >
-                                <Minus className="h-6 w-6 sm:h-8 sm:w-8" />
+                                ➖
                             </Button>
 
                             {/* GIANT Number Input */}
@@ -232,7 +231,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                 onClick={incrementPackages}
                                 className="h-12 w-12 sm:h-16 sm:w-16 rounded-full text-2xl font-bold hover:bg-purple-50 dark:hover:bg-purple-950 shrink-0"
                             >
-                                <Plus className="h-6 w-6 sm:h-8 sm:w-8" />
+                                ➕
                             </Button>
                         </div>
 
@@ -259,7 +258,6 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                             onClick={() => setShowPhotoSection(!showPhotoSection)}
                             className="text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                         >
-                            <Camera className="mr-2 h-5 w-5" />
                             📸 Add Photo (optional)
                         </Button>
                         
@@ -269,8 +267,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                             onClick={() => setShowNotesSection(!showNotesSection)}
                             className="text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                         >
-                            <FileText className="mr-2 h-5 w-5" />
-                            + Add a note
+                            📝 Add a note
                         </Button>
                     </div>
 
@@ -306,9 +303,9 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                                 <button
                                                     type="button"
                                                     onClick={() => removePhoto(index)}
-                                                    className="absolute right-2 top-2 rounded-full bg-destructive p-1.5 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100"
+                                                    className="absolute right-2 top-2 rounded-full bg-destructive p-1.5 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100 text-lg"
                                                 >
-                                                    <X className="h-4 w-4" />
+                                                    ❌
                                                 </button>
                                             </div>
                                         ))}
@@ -324,8 +321,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                             onClick={() => document.getElementById('photo-upload')?.click()}
                                             className="w-full"
                                         >
-                                            <Upload className="mr-2 h-4 w-4" />
-                                            {photos.length === 0 ? 'Upload Photos' : `Add More (${photos.length}/5)`}
+                                            {photos.length === 0 ? '📤 Upload Photos' : `📤 Add More (${photos.length}/5)`}
                                         </Button>
                                         <input
                                             id="photo-upload"
