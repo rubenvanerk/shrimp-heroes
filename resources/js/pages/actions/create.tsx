@@ -12,7 +12,6 @@ import { Transition } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
 import { create } from '@/routes/actions';
 import { useEffect, useState } from 'react';
-import { X, Upload } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -32,6 +31,8 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
     const [photos, setPhotos] = useState<File[]>([]);
     const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
     const [photoError, setPhotoError] = useState<string | null>(null);
+    const [showPhotoSection, setShowPhotoSection] = useState(false);
+    const [showNotesSection, setShowNotesSection] = useState(false);
 
     const { data, setData, post, processing, errors, recentlySuccessful, reset } = useForm({
         store_id: '',
@@ -119,6 +120,19 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
         setPhotoError(null);
     };
 
+    // Handle increment/decrement
+    const incrementPackages = () => {
+        const current = parseInt(data.packages_flipped) || 0;
+        setData('packages_flipped', String(current + 1));
+    };
+
+    const decrementPackages = () => {
+        const current = parseInt(data.packages_flipped) || 0;
+        if (current > 1) {
+            setData('packages_flipped', String(current - 1));
+        }
+    };
+
     // Handle form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -128,6 +142,8 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                 reset();
                 setPhotos([]);
                 setPhotoPreviews([]);
+                setShowPhotoSection(false);
+                setShowNotesSection(false);
             },
         });
     };
@@ -136,11 +152,15 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Action" />
 
-            <div className="mx-auto max-w-2xl space-y-6 p-4 pb-24 md:pb-4">
-                <HeadingSmall
-                    title="Report your action"
-                    description="Log the packages you've flipped to help save shrimp"
-                />
+            <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-4 pb-32 md:pb-8">
+                <div className="text-center space-y-2">
+                    <h1 className="text-4xl md:text-5xl font-black text-purple-600 dark:text-purple-400">
+                        🦐 Log your flip
+                    </h1>
+                    <p className="text-lg text-gray-600 dark:text-gray-400">
+                        Time to celebrate your awesome activism!
+                    </p>
+                </div>
 
                 {/* Location status */}
                 {isLoadingLocation && (
@@ -161,42 +181,108 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                        <>
-                            {/* Store Selection */}
-                            <StoreCombobox
-                                value={data.store_id}
-                                onChange={(value) => setData('store_id', value)}
-                                userLocation={userLocation}
-                                error={errors.store_id}
-                            />
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* GIANT Number Input Section */}
+                    <div className="text-center space-y-4">
+                        <div className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200">
+                            I just flipped...
+                        </div>
+                        
+                        <div className="flex items-center justify-center gap-2 sm:gap-4">
+                            {/* Decrement Button */}
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="lg"
+                                onClick={decrementPackages}
+                                className="h-12 w-12 sm:h-16 sm:w-16 rounded-full text-2xl font-bold hover:bg-purple-50 dark:hover:bg-purple-950 shrink-0"
+                                disabled={!data.packages_flipped || parseInt(data.packages_flipped) <= 1}
+                            >
+                                ➖
+                            </Button>
 
-                            {/* Packages Flipped */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="packages_flipped">
-                                    Packages flipped *
-                                </Label>
-
-                                <Input
+                            {/* GIANT Number Input */}
+                            <div className="relative flex-shrink-0">
+                                <input
                                     id="packages_flipped"
                                     name="packages_flipped"
                                     type="number"
                                     min="1"
-                                    className="mt-1 block w-full"
-                                    placeholder="e.g. 50"
+                                    className="text-center text-6xl font-black bg-transparent border-0 outline-none w-24 sm:w-32 md:w-48 md:text-8xl text-purple-600 dark:text-purple-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    placeholder="0"
                                     value={data.packages_flipped}
                                     onChange={(e) => setData('packages_flipped', e.target.value)}
                                     required
                                 />
-
-                                <InputError message={errors.packages_flipped} />
+                                {errors.packages_flipped && (
+                                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                                        <p className="text-sm text-red-600 bg-white dark:bg-gray-800 px-2 py-1 rounded shadow">
+                                            {errors.packages_flipped}
+                                        </p>
+                                    </div>
+                                )}
                             </div>
 
-                            {/* Photo Upload */}
-                            <div className="grid gap-2">
-                                <Label htmlFor="photos">
-                                    Photos (optional)
-                                </Label>
+                            {/* Increment Button */}
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="lg"
+                                onClick={incrementPackages}
+                                className="h-12 w-12 sm:h-16 sm:w-16 rounded-full text-2xl font-bold hover:bg-purple-50 dark:hover:bg-purple-950 shrink-0"
+                            >
+                                ➕
+                            </Button>
+                        </div>
+
+                        <div className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200">
+                            shrimp packages!
+                        </div>
+                    </div>
+
+                    {/* Store Selection - Always Visible */}
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border w-full">
+                        <StoreCombobox
+                            value={data.store_id}
+                            onChange={(value) => setData('store_id', value)}
+                            userLocation={userLocation}
+                            error={errors.store_id}
+                        />
+                    </div>
+
+                    {/* Optional Actions Row */}
+                    <div className="flex justify-center gap-4">
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={() => setShowPhotoSection(!showPhotoSection)}
+                            className="text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                        >
+                            📸 Add Photo (optional)
+                        </Button>
+                        
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={() => setShowNotesSection(!showNotesSection)}
+                            className="text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                        >
+                            📝 Add a note
+                        </Button>
+                    </div>
+
+                    {/* Photo Upload Section - Expandable */}
+                    <Transition
+                        show={showPhotoSection}
+                        enter="transition-all duration-300 ease-in-out"
+                        enterFrom="opacity-0 max-h-0"
+                        enterTo="opacity-100 max-h-96"
+                        leave="transition-all duration-300 ease-in-out"
+                        leaveFrom="opacity-100 max-h-96"
+                        leaveTo="opacity-0 max-h-0"
+                    >
+                        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border overflow-hidden">
+                            <div className="grid gap-4">
                                 <p className="text-sm text-muted-foreground">
                                     Upload photos of the flipped packages (max 5 photos, 5MB each)
                                 </p>
@@ -217,9 +303,9 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                                 <button
                                                     type="button"
                                                     onClick={() => removePhoto(index)}
-                                                    className="absolute right-2 top-2 rounded-full bg-destructive p-1.5 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100"
+                                                    className="absolute right-2 top-2 rounded-full bg-destructive p-1.5 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100 text-lg"
                                                 >
-                                                    <X className="h-4 w-4" />
+                                                    ❌
                                                 </button>
                                             </div>
                                         ))}
@@ -235,8 +321,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                             onClick={() => document.getElementById('photo-upload')?.click()}
                                             className="w-full"
                                         >
-                                            <Upload className="mr-2 h-4 w-4" />
-                                            {photos.length === 0 ? 'Upload Photos' : `Add More (${photos.length}/5)`}
+                                            {photos.length === 0 ? '📤 Upload Photos' : `📤 Add More (${photos.length}/5)`}
                                         </Button>
                                         <input
                                             id="photo-upload"
@@ -254,43 +339,46 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                                 )}
                                 <InputError message={errors.photos} />
                             </div>
+                        </div>
+                    </Transition>
 
-                            {/* Notes */}
+                    {/* Notes Section - Expandable */}
+                    <Transition
+                        show={showNotesSection}
+                        enter="transition-all duration-300 ease-in-out"
+                        enterFrom="opacity-0 max-h-0"
+                        enterTo="opacity-100 max-h-48"
+                        leave="transition-all duration-300 ease-in-out"
+                        leaveFrom="opacity-100 max-h-48"
+                        leaveTo="opacity-0 max-h-0"
+                    >
+                        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border overflow-hidden">
                             <div className="grid gap-2">
-                                <Label htmlFor="notes">
-                                    Notes (optional)
-                                </Label>
-
                                 <Textarea
                                     id="notes"
                                     name="notes"
-                                    className="mt-1 block w-full"
+                                    className="border-0 bg-transparent resize-none focus:ring-0 focus:border-0 px-4 py-3 text-base"
                                     placeholder="Add any additional details about this action..."
                                     rows={4}
                                     value={data.notes}
                                     onChange={(e) => setData('notes', e.target.value)}
-                />
-
+                                />
                                 <InputError message={errors.notes} />
-                            </div>                            {/* Submit Button */}
-                            <div className="flex items-center gap-4">
-                                <Button type="submit" disabled={processing}>
-                                    {processing ? 'Submitting...' : 'Report Action'}
-                                </Button>
-
-                                <Transition
-                                    show={recentlySuccessful}
-                                    enter="transition ease-in-out"
-                                    enterFrom="opacity-0"
-                                    leave="transition ease-in-out"
-                                    leaveTo="opacity-0"
-                                >
-                                    <p className="text-sm text-muted-foreground">
-                                        Reported successfully!
-                                    </p>
-                                </Transition>
                             </div>
-                        </>
+                        </div>
+                    </Transition>
+
+                    {/* Submit Button - Always Visible */}
+                    <div className="flex items-center justify-center">
+                        <Button
+                            type="submit"
+                            disabled={processing}
+                            size="lg"
+                            className="px-12 py-4 text-xl font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
+                        >
+                            {processing ? 'Submitting...' : 'Report Action'}
+                        </Button>
+                    </div>
                 </form>
             </div>
         </AppLayout>
