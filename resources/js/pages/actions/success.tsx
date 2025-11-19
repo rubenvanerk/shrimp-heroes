@@ -42,7 +42,7 @@ export default function Success({
         <AppLayout>
             <Head title="Action Reported!" />
 
-            <div className="mx-auto w-full max-w-2xl space-y-8 text-center px-4 pt-8 pb-32">
+            <div className="mx-auto w-full max-w-2xl space-y-8 text-center pt-8">
                     {/* Celebration Header */}
                     <div className="space-y-4">
                         <div className="text-8xl">🎉</div>

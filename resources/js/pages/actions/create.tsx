@@ -152,7 +152,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Action" />
 
-            <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-4 pb-32 md:pb-8">
+            <div className="mx-auto w-full max-w-2xl space-y-6">
                 <div className="text-center space-y-2">
                     <h1 className="text-4xl md:text-5xl font-black text-purple-600 dark:text-purple-400">
                         🦐 Log your flip

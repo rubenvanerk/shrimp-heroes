@@ -56,7 +56,7 @@ export default function Dashboard({
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 pb-24 md:pb-4">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl">
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-bold">Dashboard</h1>
                     <Button asChild size="lg" className="gap-2">

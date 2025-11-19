@@ -81,7 +81,7 @@ export default function Guide() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="How It Works" />
-            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4 pb-24 md:pb-4">
+            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl">
                 <div className="mx-auto w-full max-w-4xl space-y-6">
                     <div className="text-center">
                         <h1 className="mb-2 text-3xl font-bold">How It Works</h1>
