@@ -152,10 +152,10 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Report Action" />
 
-            <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-4 pb-24 md:pb-4">
+            <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-4 pb-32 md:pb-8">
                 <div className="text-center space-y-2">
                     <h1 className="text-4xl md:text-5xl font-black text-purple-600 dark:text-purple-400">
-                        🦐 Shrimp Hero Report!
+                        🦐 Log your flip
                     </h1>
                     <p className="text-lg text-gray-600 dark:text-gray-400">
                         Time to celebrate your awesome activism!
@@ -369,27 +369,15 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
                     </Transition>
 
                     {/* Submit Button - Always Visible */}
-                    <div className="flex items-center justify-center gap-4">
-                        <Button 
-                            type="submit" 
+                    <div className="flex items-center justify-center">
+                        <Button
+                            type="submit"
                             disabled={processing}
                             size="lg"
                             className="px-12 py-4 text-xl font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-2xl shadow-lg transform transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
                         >
                             {processing ? 'Submitting...' : 'Report Action'}
                         </Button>
-
-                        <Transition
-                            show={recentlySuccessful}
-                            enter="transition ease-in-out"
-                            enterFrom="opacity-0"
-                            leave="transition ease-in-out"
-                            leaveTo="opacity-0"
-                        >
-                            <p className="text-lg text-green-600 font-semibold">
-                                🎉 Reported successfully!
-                            </p>
-                        </Transition>
                     </div>
                 </form>
             </div>
