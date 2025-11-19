@@ -81,6 +81,24 @@ class ActionController extends Controller
 
         VerifyActionJob::dispatch($action);
 
-        return to_route('actions.index')->with('success', 'Action reported successfully!');
+        return to_route('actions.success', ['packages_flipped' => $action->packages_flipped]);
+    }
+
+    /**
+     * Show the success page after creating an action.
+     */
+    public function success(): Response
+    {
+        $userId = auth()->id();
+
+        $totalPackagesFlipped = (int) Action::where('user_id', $userId)->sum('packages_flipped');
+        $totalActions = (int) Action::where('user_id', $userId)->count();
+
+        return Inertia::render('actions/success', [
+            'packagesFlipped' => (int) request('packages_flipped'),
+            'totalPackagesFlipped' => $totalPackagesFlipped,
+            'totalActions' => $totalActions,
+            'shrimpPerPackage' => config('shrimp-heroes.shrimp_per_package'),
+        ]);
     }
 }
