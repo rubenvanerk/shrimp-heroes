@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Check, ChevronsUpDown, Loader2, MapPin, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface Store {
     id: number;
@@ -38,7 +38,7 @@ export function StoreCombobox({
     const comboboxRef = useRef<HTMLDivElement>(null);
 
     // Fetch stores based on search query
-    const fetchStores = async (searchQuery: string) => {
+    const fetchStores = useCallback(async (searchQuery: string) => {
         setLoading(true);
         try {
             const params = new URLSearchParams({
@@ -58,7 +58,7 @@ export function StoreCombobox({
         } finally {
             setLoading(false);
         }
-    };
+    }, [userLocation]);
 
     // Debounced search
     useEffect(() => {
@@ -77,14 +77,14 @@ export function StoreCombobox({
                 clearTimeout(searchTimeout.current);
             }
         };
-    }, [search, open, userLocation]);
+    }, [search, open, fetchStores]);
 
     // Load initial stores when opened
     useEffect(() => {
         if (open && stores.length === 0) {
             fetchStores('');
         }
-    }, [open]);
+    }, [open, fetchStores, stores.length]);
 
     // Close on click outside
     useEffect(() => {

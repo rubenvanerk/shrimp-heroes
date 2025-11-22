@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { index, create } from '@/routes/actions';
+import { useState } from 'react';
 
 interface SuccessProps {
     packagesFlipped: number;
@@ -36,7 +37,9 @@ export default function Success({
 }: SuccessProps) {
     const shrimpHelped = packagesFlipped * shrimpPerPackage;
     const totalShrimpHelped = totalPackagesFlipped * shrimpPerPackage;
-    const randomPun = shrimpPuns[Math.floor(Math.random() * shrimpPuns.length)];
+    const [randomPun] = useState(
+        () => shrimpPuns[Math.floor(Math.random() * shrimpPuns.length)]
+    );
 
     return (
         <AppLayout>

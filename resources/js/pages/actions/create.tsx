@@ -1,10 +1,7 @@
 import ActionController from '@/actions/App/Http/Controllers/ActionController';
-import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { StoreCombobox } from '@/components/store-combobox';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -25,7 +22,7 @@ interface CreateActionProps {
 }
 
 export default function CreateAction({ userLocation: initialUserLocation }: CreateActionProps) {
-    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+    const [isLoadingLocation, setIsLoadingLocation] = useState(() => !initialUserLocation && 'geolocation' in navigator);
     const [locationError, setLocationError] = useState<string | null>(null);
     const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(initialUserLocation || null);
     const [photos, setPhotos] = useState<File[]>([]);
@@ -34,7 +31,7 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
     const [showPhotoSection, setShowPhotoSection] = useState(false);
     const [showNotesSection, setShowNotesSection] = useState(false);
 
-    const { data, setData, post, processing, errors, recentlySuccessful, reset } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         store_id: '',
         packages_flipped: '',
         notes: '',
@@ -43,22 +40,31 @@ export default function CreateAction({ userLocation: initialUserLocation }: Crea
 
     // Request user location on mount if not already provided
     useEffect(() => {
-        if (!userLocation && 'geolocation' in navigator) {
-            setIsLoadingLocation(true);
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    setUserLocation({ latitude, longitude });
-                    setIsLoadingLocation(false);
-                },
-                (error) => {
-                    setIsLoadingLocation(false);
-                    console.error('Location error:', error);
-                    setLocationError('Unable to get your location. Showing all stores.');
-                }
-            );
+        if (userLocation || !('geolocation' in navigator)) {
+            return;
         }
-    }, []); // Empty dependency array - only run once on mount
+
+        let cancelled = false;
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                if (cancelled) return;
+                const { latitude, longitude } = position.coords;
+                setUserLocation({ latitude, longitude });
+                setIsLoadingLocation(false);
+            },
+            (error) => {
+                if (cancelled) return;
+                setIsLoadingLocation(false);
+                console.error('Location error:', error);
+                setLocationError('Unable to get your location. Showing all stores.');
+            }
+        );
+
+        return () => {
+            cancelled = true;
+        };
+    }, [userLocation]);
 
     // Handle photo upload
     const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

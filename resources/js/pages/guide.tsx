@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { BookOpen, Camera, CircleHelp, Eye, Hand, Heart, Store } from 'lucide-react';
+import { BookOpen, Camera, CircleHelp, Hand, Heart, Store } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
