@@ -13,40 +13,6 @@ use Inertia\Response;
 class ActionController extends Controller
 {
     /**
-     * Display a listing of the user's actions.
-     */
-    public function index(): Response
-    {
-        $userId = auth()->id();
-
-        $totalPackagesFlipped = (int) Action::where('user_id', $userId)->sum('packages_flipped');
-        $totalActions = (int) Action::where('user_id', $userId)->count();
-
-        $actions = Action::query()
-            ->where('user_id', $userId)
-            ->with(['store', 'verification'])
-            ->latest()
-            ->paginate(15)
-            ->through(fn ($action) => [
-                'id' => $action->id,
-                'packages_flipped' => $action->packages_flipped,
-                'notes' => $action->notes,
-                'created_at' => $action->created_at,
-                'verification_status' => $action->verification_status,
-                'store' => $action->store,
-            ]);
-
-        return Inertia::render('actions/index', [
-            'actions' => $actions,
-            'userStats' => [
-                'totalPackagesFlipped' => $totalPackagesFlipped,
-                'totalShrimpHelped' => $totalPackagesFlipped * config('shrimp-heroes.shrimp_per_package'),
-                'totalActions' => $totalActions,
-            ],
-        ]);
-    }
-
-    /**
      * Show the form for creating a new action.
      */
     public function create(): Response

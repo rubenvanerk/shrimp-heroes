@@ -1,10 +1,8 @@
 <?php
 
-use App\Jobs\VerifyActionJob;
 use App\Models\Action;
 use App\Models\ActionVerification;
 use App\Models\User;
-use Illuminate\Support\Facades\Queue;
 
 use function Pest\Laravel\actingAs;
 
@@ -45,14 +43,14 @@ test('verification status returns rejected when confidence is below 80', functio
     expect($action->verification_status)->toBe('rejected');
 });
 
-test('actions index includes verification status', function () {
+test('dashboard includes verification status for user actions', function () {
     $user = User::factory()->create();
     $action = Action::factory()->for($user)->create();
     ActionVerification::factory()->for($action)->create([
         'ai_confidence_score' => 90,
     ]);
 
-    $response = actingAs($user)->get(route('actions.index'));
+    $response = actingAs($user)->get(route('dashboard'));
 
     $response->assertOk();
     $actions = $response->viewData('page')['props']['actions']['data'];

@@ -13,118 +13,70 @@ test('authenticated users can visit the dashboard', function () {
     $this->get(route('dashboard'))->assertOk();
 });
 
-test('dashboard displays global stats', function () {
+test('dashboard displays user stats', function () {
     $shrimpPerPackage = config('shrimp-heroes.shrimp_per_package');
 
-    $user1 = User::factory()->create();
-    $user2 = User::factory()->create();
+    $user = User::factory()->create();
+    Action::factory()->for($user)->create(['packages_flipped' => 10]);
+    Action::factory()->for($user)->create(['packages_flipped' => 5]);
 
-    Action::factory()->for($user1)->create(['packages_flipped' => 10]);
-    Action::factory()->for($user1)->create(['packages_flipped' => 5]);
-    Action::factory()->for($user2)->create(['packages_flipped' => 20]);
-
-    $this->actingAs($user1);
+    $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));
 
     $response->assertOk();
-    expect($response->viewData('page')['props']['globalStats']['totalShrimpHelped'])->toBe(35 * $shrimpPerPackage);
-    expect($response->viewData('page')['props']['globalStats']['totalActions'])->toBe(3);
+    expect($response->viewData('page')['props']['userStats']['totalPackagesFlipped'])->toBe(15);
+    expect($response->viewData('page')['props']['userStats']['totalShrimpHelped'])->toBe(15 * $shrimpPerPackage);
+    expect($response->viewData('page')['props']['userStats']['totalActions'])->toBe(2);
 });
 
-test('dashboard displays top 10 users in leaderboard', function () {
-    $shrimpPerPackage = config('shrimp-heroes.shrimp_per_package');
+test('dashboard displays user name for welcome message', function () {
+    $user = User::factory()->create(['name' => 'John Doe']);
 
-    $users = User::factory()->count(15)->create();
-
-    foreach ($users as $index => $user) {
-        Action::factory()->for($user)->create([
-            'packages_flipped' => (15 - $index) * 10,
-        ]);
-    }
-
-    $this->actingAs($users->first());
+    $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));
 
     $response->assertOk();
-    $leaderboard = $response->viewData('page')['props']['leaderboard'];
-    expect($leaderboard)->toHaveCount(10);
-    expect($leaderboard[0]['total_shrimp_helped'])->toBe(150 * $shrimpPerPackage);
-    expect($leaderboard[9]['total_shrimp_helped'])->toBe(60 * $shrimpPerPackage);
+    expect($response->viewData('page')['props']['userName'])->toBe('John Doe');
 });
 
-test('current user in top 10 is marked correctly', function () {
-    $currentUser = User::factory()->create();
-    Action::factory()->for($currentUser)->create(['packages_flipped' => 100]);
+test('dashboard displays user actions', function () {
+    $user = User::factory()->create();
+    Action::factory()->for($user)->count(3)->create();
 
-    $otherUsers = User::factory()->count(5)->create();
-    foreach ($otherUsers as $user) {
-        Action::factory()->for($user)->create(['packages_flipped' => 50]);
-    }
-
-    $this->actingAs($currentUser);
+    $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));
 
     $response->assertOk();
-    expect($response->viewData('page')['props']['currentUserInTop10'])->toBeTrue();
+    expect($response->viewData('page')['props']['actions']['data'])->toHaveCount(3);
 });
 
-test('current user outside top 10 is marked correctly', function () {
-    $shrimpPerPackage = config('shrimp-heroes.shrimp_per_package');
+test('dashboard only shows current user actions', function () {
+    $user = User::factory()->create();
+    $otherUser = User::factory()->create();
 
-    $topUsers = User::factory()->count(10)->create();
-    foreach ($topUsers as $index => $user) {
-        Action::factory()->for($user)->create([
-            'packages_flipped' => (10 - $index) * 100,
-        ]);
-    }
+    Action::factory()->for($user)->count(2)->create();
+    Action::factory()->for($otherUser)->count(3)->create();
 
-    $currentUser = User::factory()->create();
-    Action::factory()->for($currentUser)->create(['packages_flipped' => 10]);
-
-    $this->actingAs($currentUser);
+    $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));
 
     $response->assertOk();
-    expect($response->viewData('page')['props']['currentUserInTop10'])->toBeFalse();
-    expect($response->viewData('page')['props']['currentUserStats']['total_shrimp_helped'])->toBe(10 * $shrimpPerPackage);
+    expect($response->viewData('page')['props']['actions']['data'])->toHaveCount(2);
 });
 
-test('user with no actions appears in leaderboard with zero stats', function () {
-    $userWithActions = User::factory()->create();
-    Action::factory()->for($userWithActions)->create(['packages_flipped' => 50]);
+test('dashboard shows zero stats for user with no actions', function () {
+    $user = User::factory()->create();
 
-    $currentUser = User::factory()->create();
-
-    $this->actingAs($currentUser);
+    $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));
 
     $response->assertOk();
-    expect($response->viewData('page')['props']['currentUserStats']['total_shrimp_helped'])->toBe(0);
-    expect($response->viewData('page')['props']['currentUserStats']['total_actions'])->toBe(0);
-});
-
-test('leaderboard orders users by total shrimp helped', function () {
-    $user1 = User::factory()->create(['name' => 'Alice']);
-    $user2 = User::factory()->create(['name' => 'Bob']);
-    $user3 = User::factory()->create(['name' => 'Charlie']);
-
-    Action::factory()->for($user1)->create(['packages_flipped' => 30]);
-    Action::factory()->for($user2)->create(['packages_flipped' => 50]);
-    Action::factory()->for($user3)->create(['packages_flipped' => 10]);
-
-    $this->actingAs($user1);
-
-    $response = $this->get(route('dashboard'));
-
-    $response->assertOk();
-    $leaderboard = $response->viewData('page')['props']['leaderboard'];
-
-    expect($leaderboard[0]['name'])->toBe('Bob');
-    expect($leaderboard[1]['name'])->toBe('Alice');
-    expect($leaderboard[2]['name'])->toBe('Charlie');
+    expect($response->viewData('page')['props']['userStats']['totalPackagesFlipped'])->toBe(0);
+    expect($response->viewData('page')['props']['userStats']['totalShrimpHelped'])->toBe(0);
+    expect($response->viewData('page')['props']['userStats']['totalActions'])->toBe(0);
 });

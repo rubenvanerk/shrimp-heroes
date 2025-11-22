@@ -10,10 +10,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { dashboard, leaderboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Info, LayoutGrid, List } from 'lucide-react';
+import { BookOpen, Info, LayoutGrid, Trophy } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -23,9 +23,9 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'My Actions',
-        href: '/actions',
-        icon: List,
+        title: 'Leaderboard',
+        href: leaderboard(),
+        icon: Trophy,
     },
     {
         title: 'Guide',

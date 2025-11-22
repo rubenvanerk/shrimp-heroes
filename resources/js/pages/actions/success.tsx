@@ -1,7 +1,8 @@
 import { Head, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { index, create } from '@/routes/actions';
+import { dashboard } from '@/routes';
+import { create } from '@/routes/actions';
 import { useState } from 'react';
 
 interface SuccessProps {
@@ -112,7 +113,7 @@ export default function Success({
                             variant="outline"
                             className="px-8 py-6 text-xl font-bold rounded-2xl"
                         >
-                            <Link href={index().url}>View All Actions</Link>
+                            <Link href={dashboard().url}>View Dashboard</Link>
                         </Button>
                     </div>
             </div>

@@ -1,7 +1,7 @@
-import { dashboard } from '@/routes';
+import { dashboard, leaderboard } from '@/routes';
 import { usePage } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, List, Info } from 'lucide-react';
+import { BookOpen, LayoutGrid, Trophy, Info } from 'lucide-react';
 
 export function BottomNav() {
     const { url } = usePage();
@@ -13,9 +13,9 @@ export function BottomNav() {
             icon: LayoutGrid,
         },
         {
-            title: 'Actions',
-            href: '/actions',
-            icon: List,
+            title: 'Leaderboard',
+            href: leaderboard().url,
+            icon: Trophy,
         },
         {
             title: 'Guide',
@@ -31,7 +31,8 @@ export function BottomNav() {
 
     const isActive = (href: string) => {
         if (href === dashboard().url && url === '/dashboard') return true;
-        if (href !== dashboard().url && url.startsWith(href)) return true;
+        if (href === leaderboard().url && url === '/leaderboard') return true;
+        if (href !== dashboard().url && href !== leaderboard().url && url.startsWith(href)) return true;
         return false;
     };
 
