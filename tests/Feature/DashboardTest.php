@@ -14,6 +14,8 @@ test('authenticated users can visit the dashboard', function () {
 });
 
 test('dashboard displays global stats', function () {
+    $shrimpPerPackage = config('shrimp-heroes.shrimp_per_package');
+
     $user1 = User::factory()->create();
     $user2 = User::factory()->create();
 
@@ -26,11 +28,13 @@ test('dashboard displays global stats', function () {
     $response = $this->get(route('dashboard'));
 
     $response->assertOk();
-    expect($response->viewData('page')['props']['globalStats']['totalShrimpHelped'])->toBe(35);
+    expect($response->viewData('page')['props']['globalStats']['totalShrimpHelped'])->toBe(35 * $shrimpPerPackage);
     expect($response->viewData('page')['props']['globalStats']['totalActions'])->toBe(3);
 });
 
 test('dashboard displays top 10 users in leaderboard', function () {
+    $shrimpPerPackage = config('shrimp-heroes.shrimp_per_package');
+
     $users = User::factory()->count(15)->create();
 
     foreach ($users as $index => $user) {
@@ -46,8 +50,8 @@ test('dashboard displays top 10 users in leaderboard', function () {
     $response->assertOk();
     $leaderboard = $response->viewData('page')['props']['leaderboard'];
     expect($leaderboard)->toHaveCount(10);
-    expect($leaderboard[0]['total_shrimp_helped'])->toBe(150);
-    expect($leaderboard[9]['total_shrimp_helped'])->toBe(60);
+    expect($leaderboard[0]['total_shrimp_helped'])->toBe(150 * $shrimpPerPackage);
+    expect($leaderboard[9]['total_shrimp_helped'])->toBe(60 * $shrimpPerPackage);
 });
 
 test('current user in top 10 is marked correctly', function () {
@@ -68,6 +72,8 @@ test('current user in top 10 is marked correctly', function () {
 });
 
 test('current user outside top 10 is marked correctly', function () {
+    $shrimpPerPackage = config('shrimp-heroes.shrimp_per_package');
+
     $topUsers = User::factory()->count(10)->create();
     foreach ($topUsers as $index => $user) {
         Action::factory()->for($user)->create([
@@ -84,7 +90,7 @@ test('current user outside top 10 is marked correctly', function () {
 
     $response->assertOk();
     expect($response->viewData('page')['props']['currentUserInTop10'])->toBeFalse();
-    expect($response->viewData('page')['props']['currentUserStats']['total_shrimp_helped'])->toBe(10);
+    expect($response->viewData('page')['props']['currentUserStats']['total_shrimp_helped'])->toBe(10 * $shrimpPerPackage);
 });
 
 test('user with no actions appears in leaderboard with zero stats', function () {
