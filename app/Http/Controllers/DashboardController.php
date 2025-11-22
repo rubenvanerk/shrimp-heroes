@@ -15,6 +15,8 @@ class DashboardController extends Controller
         $totalPackagesFlipped = (int) Action::where('user_id', $userId)->sum('packages_flipped');
         $totalActions = (int) Action::where('user_id', $userId)->count();
 
+        $shrimpPerPackage = config('shrimp-heroes.shrimp_per_package');
+
         $actions = Action::query()
             ->where('user_id', $userId)
             ->with(['store', 'verification'])
@@ -23,6 +25,7 @@ class DashboardController extends Controller
             ->through(fn ($action) => [
                 'id' => $action->id,
                 'packages_flipped' => $action->packages_flipped,
+                'shrimp_helped' => $action->packages_flipped * $shrimpPerPackage,
                 'notes' => $action->notes,
                 'created_at' => $action->created_at,
                 'verification_status' => $action->verification_status,
